@@ -1,0 +1,84 @@
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{amsmath}
+\usepackage{mathrsfs}
+\usepackage{mathtools}
+\usepackage{blindtext}
+\usepackage{xtab,afterpage}
+\usepackage{caption}
+\usepackage{booktabs}
+
+\newcommand{\dg}{$^\circ$}
+\newcommand{\sps}{$\hspace{22em}$}
+\newcommand{\dus}{$\Delta \overline{u}$}
+\newcommand{\ums}{$\overline{u}$}
+\newcommand{\PTm}{$\overline{P_{T}}$}
+\newcommand{\Pfm}{$\overline{P_{farm}}$}
+
+\newcommand{\eq}[2]{\begin{equation} #1 \label{#2} \end{equation}}
+\newcommand{\df}[2]{\frac{\partial #1}{\partial #2}}
+
+\newcommand{\image}[3]{%
+\begin{figure}[htp]
+ \centering%
+ \includegraphics[width=#3\textwidth]{Figures/#1}
+ \caption{#2} \label{#1}
+ \end{figure}
+}
+
+\newcommand{\mt}[1]{\overline{#1}}
+\newcommand{\mAD}[1]{\langle #1 \rangle_{AD}}
+
+
+\newcommand{\vc}{\mathbf{c}}
+\newcommand{\vw}{\mathbf{w}}
+\newcommand{\vx}{\mathbf{x}}
+\newcommand{\vy}{\mathbf{y}}
+\newcommand{\vz}{\mathbf{z}}
+\newcommand{\vp}{\boldsymbol{\theta}}
+\newcommand{\model}{\mathcal{M}}
+\newcommand{\poly}{\mathcal{P}}
+\newcommand{\mpoly}{\boldsymbol{\phi}}
+\newcommand{\multind}{\mathcal{I}}
+
+\newcommand{\eyE}{\epsilon_{y \,\expect}}
+\newcommand{\eyS}{\epsilon_{y \,\std}}
+
+\newcommand{\pdf}{\mathrm{PDF}}
+\newcommand{\cdf}{\mathrm{CDF}}
+\newcommand{\expect}{\mathbb{E}}
+\newcommand{\std}{\mathbb{S}}
+\newcommand{\variance}{\mathbb{V}}
+\newcommand{\covar}{\mathbb{C}}
+\newcommand{\Fmodel}{\mathbb{F}}
+
+\newcommand{\vpest}{\boldsymbol{\hat{\vp}}}
+\newcommand{\post}{\text{PDF}_{\text{post}}}
+\newcommand{\prior}{\text{PDF}_{\text{prior}}}
+\newcommand{\like}{\mathcal{L}}
+
+\newcommand{\ws}{\text{WS}}
+\newcommand{\stdws}{\sigma_{1}}
+\newcommand{\shear}{\alpha}
+\newcommand{\yaw}{\gamma}
+
+\usepackage{catoptions}
+\newcommand*\Nset[1][1]{%
+  \{1%
+  \cptifcasse\ifstrcmpTF{#1}
+    {1}{}
+    {2}{, 2}
+    {3}{, 2, 3}
+    {4}{, 2, 3, 4}
+  \elseif
+    , 2, \dots, #1%
+  \endif
+  \}%
+}
+
+
+\usepackage{adjustbox}
+\usepackage{rotating}
+
+\newcommand*\rot{\rotatebox{90}}
+
