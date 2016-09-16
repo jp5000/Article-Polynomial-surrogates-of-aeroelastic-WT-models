@@ -36,7 +36,7 @@
 %% elsarticle.cls. If you prefer to use the old commands
 %% please give \usepackage{epsfig}
 
-\usepackage[margin=1.0in]{geometry}
+\usepackage[margin=1.3in]{geometry}
 \input{head.tex}
 
 %% The amssymb package provides various useful mathematical symbols
@@ -97,7 +97,7 @@
 
 \begin{abstract}
 %% Text of abstract
-In the present work, polynomial surrogates are used to characterize the energy production and lifetime equivalent fatigue loads for different components of the DTU 10 MW reference wind turbine under realistic atmospheric conditions. %<Comment: this sentence can go somewhere in the introduction, but it is not a good idea to put in the abstract, where we should only describe work done by the authors> polynomial chaos expansion is a method to propagate uncertainty in highly nonlinear models that requires a significantly lower number of model evaluations in comparison to Monte-Carlo simulations. The application of PCE to wind energy problems requires the use of iso-probability transformations to do a change of variables from the correlated joint probability distribution of the input variables into a non-correlated space. A k-fold cross validation is implemented to avoid over fitting and to achieve sparsity in the surrogates.
+In the present work, polynomial surrogates are used to characterize the energy production and lifetime equivalent fatigue loads for different components of the DTU 10 MW reference wind turbine under realistic atmospheric conditions. %<Comment: this sentence can go somewhere in the introduction, but it is not a good idea to put in the abstract, where we should only describe work done by the authors> polynomial chaos expansion is a method to propagate uncertainty in highly nonlinear models that requires a significantly lower number of model evaluations in comparison to MC simulations. The application of PCE to wind energy problems requires the use of iso-probability transformations to do a change of variables from the correlated joint probability distribution of the input variables into a non-correlated space. A k-fold cross validation is implemented to avoid over fitting and to achieve sparsity in the surrogates.
 One of the contributions of the present article is to model the variability caused by different turbulent structures in the inflow. This is done by creating independent surrogates for the mean and standard deviation of each output of the aeroelastic model for different realizations of the turbulent structures. A global sensitivity analysis shows that the turbulent inflow realization has a bigger impact on the total distribution of equivalent fatigue loads than the shear coefficient or yaw miss-alignment. The methodology presented extends the deterministic power and thrust coefficient curves to uncertainty models and adds new variables like damage equivalent fatigue loads in different components of a wind turbine. These uncertainty models can then be implemented inside other work-flows such as: estimation of the uncertainty in annual energy production due to inter yearly resource variability and/or robust wind power plant layout optimization. It can be concluded that it is possible to capture the global behavior of a modern wind turbine and its uncertainty under realistic inflow conditions using polynomial response surfaces. The surrogates are a way to obtain power and load estimation under site specific characteristics without sharing the proprietary aero-elastic design. % < We should add a sentence summarizing the conclusions >
 \end{abstract}
 %
@@ -132,17 +132,17 @@ The wind turbine design standard IEC 61400-1 \cite{international2005iec} provide
 \end{figure*}
 
 
-If a full design load case setup similar to the IEC 61400-1 design cases is used for that purpose, the problem quickly becomes time-consuming as new dynamic simulations would be required for each site. As an example, the number of simulations required to predict within $1\%$ error the lifetime equivalent fatigue loads on a floating wind turbine can reach up to $3,200,000=20^5$ using regular grid-based estimates or in the order of 50,000 using Monte-Carlo simulation \cite{graf2015high}; in this study the inflow conditions (sea/wind fields) are characterized by five stochastic variables. An approach that alleviates these issues is mapping the turbine response to different environmental inputs by means of a fast and accurate surrogate model. Several techniques can be used to predict the behavior of the turbine from a limited set of model evaluations such as: interpolation techniques, response surface techniques, polynomial chaos expansions (PCE), Gaussian process (Kriging) and machine learning techniques. 
+If a full design load case setup similar to the IEC 61400-1 design cases is used for that purpose, the problem quickly becomes time-consuming as new dynamic simulations would be required for each site. As an example, the number of simulations required to predict within $1\%$ error the lifetime equivalent fatigue loads on a floating wind turbine can reach up to $3,200,000=20^5$ using regular grid-based estimates or in the order of 50,000 using Monte-Carlo (MC) simulation \cite{graf2015high}; in this study the inflow conditions (sea/wind fields) are characterized by five stochastic variables. An approach that alleviates these issues is mapping the turbine response to different environmental inputs by means of a fast and accurate surrogate model. Several techniques can be used to predict the behavior of the turbine from a limited set of model evaluations such as: interpolation techniques, response surface techniques, polynomial chaos expansions (PCE), Gaussian process (Kriging) and machine learning techniques. 
 
 A quadratic response surface technique based on a circular central composite design has been used to represent the response of a wind turbine to five environmental input parameters \cite{toft2016assessment}. The probability density function ($\pdf$) of the fatigue load in different components of the NREL 5 MW reference turbine has been studied as function of the $\pdf$ of four inputs: mean wind speed, yaw error, wind shear exponent and wind veer parameter \cite{TallwindReport}. A Kriging surrogate has been used as a function of wind speed and turbulent standard deviation to predict the 50 year extreme loads on a 5 MW wind turbine \cite{abdallah2016influence}. Two different regression-tree wind turbine surrogates have been developed for power production \cite{clifton2013using} and for equivalent fatigue loads \cite{clifton2014effect}; these surrogates use machine learning techniques to predict the output of the turbine as a function of wind speed, turbulence intensity and shear exponent.
 
-Polynomial chaos expansion is a methodology used to efficiently propagate input uncertainties through a non-linear model. This methodology consists in building a polynomial response surface to capture the global dependency of the output as a function of the uncertain inputs. PCE is widely used in the uncertainty quantification field because of its simplicity and fast convergence in comparison to a full Monte-Carlo simulation based on the original model \cite{soize2004physical, le2004uncertainty, choi2004polynomial, berveiller2006stochastic, xiu2005high}. Furthermore, adaptive PCE training algorithms can be used to obtain a sparse surrogate that minimizes the number of terms that have multiple variable dependency, making the surrogates extremely efficient response surface in multiple dimensions  \cite{blatman2011adaptive,pedregosa2011scikit,tibshirani1996regression}. In the case of smooth continuous models with multiple input variables, sparse polynomial chaos expansion methodology is the most efficient technique to build the surrogates in terms of the number of model evaluations required, the number of input dimensions they can handle and the rate of convergence \cite{blatman2011adaptive}.
+Polynomial chaos expansion is a methodology used to efficiently propagate input uncertainties through a non-linear model. This methodology consists in building a polynomial response surface to capture the global dependency of the output as a function of the uncertain inputs. PCE is widely used in the uncertainty quantification field because of its simplicity and fast convergence in comparison to a full MC simulation based on the original model \cite{soize2004physical, le2004uncertainty, choi2004polynomial, berveiller2006stochastic, xiu2005high}. Furthermore, adaptive PCE training algorithms can be used to obtain a sparse surrogate that minimizes the number of terms that have multiple variable dependency, making the surrogates extremely efficient response surfaces in multiple dimensions  \cite{blatman2011adaptive,pedregosa2011scikit,tibshirani1996regression}. In the case of smooth continuous models with multiple input variables, sparse polynomial chaos expansion methodology is the most efficient technique to build the surrogates in terms of the number of model evaluations required, the number of input dimensions they can handle and the rate of convergence \cite{blatman2011adaptive}.
 
 
 % ------------------------------------------
 %\subsection{Problem statement}
 % ------------------------------------------
-One of the main difficulties in building a surrogate of an aeroelastic wind turbine model is the fact that the turbulent inflow realization (TIR, i.e. turbulent structures in the flow field) causes variations in the different wind turbine model outputs: such as power, thrust, fatigue and extreme loads in the different components of the turbine. This can be restated as: an aeroelastic wind turbine model has stochastic/non-deterministic outputs. Many studies have analyzed the difficulties of studying fatigue and extreme loads under different turbulent inflow realizations \cite{moriarty2008database, natarajan2012outlier, tibaldi2014investigation, abdallah2016influence, toft2016assessment}. Different TIR activate different dynamics of the structure and have different control system responses; therefore are an important source of uncertainty in the prediction of the outputs of the model \cite{moriarty2008database}. The high variability in the model response to certain turbulent inflow structures has also been shown to be problematic when Monte-Carlo simulation was used to predict lifetime averages of fatigue loads on a floating wind turbine \cite{graf2015high}.
+One of the main difficulties in building a surrogate of an aeroelastic wind turbine model is the fact that the turbulent inflow realization (TIR, i.e. turbulent structures in the flow field) causes variations in the different wind turbine model outputs: such as power, thrust, fatigue and extreme loads in the different components of the turbine. This can be restated as: an aeroelastic wind turbine model has stochastic/non-deterministic outputs. Many studies have analyzed the difficulties of studying fatigue and extreme loads under different turbulent inflow realizations \cite{moriarty2008database, natarajan2012outlier, tibaldi2014investigation, abdallah2016influence, toft2016assessment}. Different TIR activate different dynamics of the structure and have different control system responses; therefore are an important source of uncertainty in the prediction of the outputs of the model \cite{moriarty2008database}. The high variability in the model response to certain turbulent inflow structures has also been shown to be problematic when MC simulation was used to predict lifetime averages of fatigue loads on a floating wind turbine \cite{graf2015high}.
 
 
 % ------------------------------------------
@@ -160,7 +160,7 @@ The aim of the present study is to demonstrate a method for building a quick and
 \end{centering}
 \end{figure*}
 
-The surrogate for the turbine model is a set of two independent polynomial response surfaces that allow to predict the variability caused by different input variable distributions and by different turbulent inflow field realizations (TIR). The distribution of the outputs $\pdf(\vy)$ is predicted through a Monte-Carlo simulation based on the distribution of the input variables $\pdf(\vx)$ using the surrogate model. Similarly, sensitivity analysis is performed using a full Monte-Carlo simulation, from which the input variables can be ranked by importance in explaining the variability in the outputs. 
+The surrogate for the turbine model is a set of two independent polynomial response surfaces that allow to predict the variability caused by different input variable distributions and by different turbulent inflow field realizations (TIR). The distribution of the outputs $\pdf(\vy)$ is predicted through a MC simulation based on the distribution of the input variables $\pdf(\vx)$ using the surrogate model. Similarly, sensitivity analysis is performed using a full MC simulation, from which the input variables can be ranked by importance in explaining the variability in the outputs. 
 
 The two polynomial response surfaces that characterize the distribution of the output at a given input point ($\vx$) are the result of having multiple turbulent inflow fields that have the same statistical parameters. One response surface characterizes the expected output with respect TIR: $\hat{y}_{\expect}(\vx)\approx \expect_{\text{TIR}}(y|\vx)$. The other one describes the standard deviation of the output with respect TIR: $\hat{y}_{\std}(\vx) \approx \sqrt{\variance_{\text{TIR}}(y|\vx)}$. This last response surface can be understood as a model that predicts the uncertainty in the turbine response due to different turbulent structures hitting the turbine. Finally, a sample can be obtained from the normal distribution constructed using the mean and the standard deviation surrogates in order to make a prediction of the variability in the output at a given input point:
 
@@ -168,11 +168,13 @@ The two polynomial response surfaces that characterize the distribution of the o
 
 \eq{\hat{y}(\vx) \sim \text{Normal} (\hat{y}_{\expect}(\vx),\, \hat{y}_{\std}(\vx))}{eq_output_distrib}
 
+The final surrogate $\hat{y}(\vx)$ can then be used to obtain distributions of the wind turbine power and loads in a given year whose wind state parameters (or wind/sea, or wind/geological) follow the distribution used to train the surrogate $\pdf(\vx)$. Since the surrogate is a response surface it can also be used to predict the distribution of the outputs when the input distributions are close but not exactly the distribution used for training the surrogate. This setup is considered a multi-leveled uncertainty propagation and it is the scenario that occurs when there is uncertainty in the parameters that characterize the WS distribution for example. This approach is necessary to estimate the uncertainty in annual energy production and lifetime averaged equivalent fatigue load.
+
 % ------------------------------------------
 \subsection{Article overview}
 % ------------------------------------------
 
-A general overview of the PCE methodology in multiple dimensions is presented in section \ref{sec_Methods}. This section describes the Rosenblatt transformation, the design of experiments used to define the training simulation points, the approach used to train sparse polynomial response surfaces and the logistic transformation used to limit the output. In section \ref{sec_Results}, the methodology is then applied to the response of the DTU 10 MW reference wind turbine HAWC2 model \cite{bak2012light} to turbulent inflow fields characterized by four input parameters. The four input parameters are the 10-min averaged hub height wind speed, the turbulent standard deviation of the instantaneous wind speed in the streamwise component, the shear exponent and the yaw misalignment angle. A study of how many independent realizations of the turbulent inflow field are required to achieve a certain error tolerance in the surrogate is presented in the section \ref{subsec_Convergence}. Finally in section \ref{subsec_Final_EX}, the surrogates are used in an example of prediction of the uncertainty in annual energy production and the uncertainty in lifetime equivalent fatigue loads.
+A general overview of the PCE methodology in multiple dimensions is presented in section \ref{sec_Methods}. This section describes the Rosenblatt transformation, the design of experiments used to define the training simulation points, the approach used to train sparse polynomial response surfaces and the logistic transformation used to limit the output. In section \ref{sec_Results}, the methodology is then applied to the response of the DTU 10 MW reference wind turbine HAWC2 model \cite{bak2012light} to turbulent inflow fields characterized by four input parameters. The four input parameters are the 10-min averaged hub height wind speed, the turbulent standard deviation of the instantaneous wind speed in the streamwise component, the shear exponent and the yaw misalignment angle. A study of how many independent realizations of the turbulent inflow field are required to achieve a certain error tolerance in the surrogate is presented in the section \ref{subsec_Convergence}. Finally in section \ref{subsec_Final_EX}, the surrogates are used in an example of prediction of the uncertainty in the annual energy production and the uncertainty in lifetime averaged equivalent fatigue loads.
 
 \section{Methods}
 \label{sec_Methods}
@@ -263,7 +265,7 @@ Since all the variables are transformed into uncorrelated unitary uniform variab
 
 %% The Rosenblatt transformation should be quite trivial - if it is necessary to shorten the paper, this is something that can be shortened significantly.
 
-% An example of the Rosenblatt transformation is shown in figure \ref{fig_rosen}.
+% An example of the Rosenblatt transformation is shown in Figure \ref{fig_rosen}.
 
 % \begin{figure}[h!]
 % \begin{centering}
@@ -308,7 +310,7 @@ A D-dimensional polynomial is constructed as the sum of the product between indi
 
 \subsection{Training point selection}
 
-The Rosenblatt transformation enables the use of multiple variance reduction Monte-Carlo sampling techniques to define the training points of a surrogate \cite{feinberg2015chaospy}. Latin hypercube sampling \cite{mckay2000comparison}, Sobol sequence \cite{sobol1967distribution} and Hammersley sequence \cite{hammersley1960monte} are some examples of such techniques. These techniques are designed to sample from the unitary hypercube of $D$ dimensions, i.e. the uniform distributed variables: $\vw_i \sim \pdf(\vw)$. Finally, the Rosenblatt transformation is used to transform each realization in the uniform sample into the correlated input space, $\vx_i = R(\vw_i) \sim \pdf(\vx)$.
+The Rosenblatt transformation enables the use of multiple variance reduction MC sampling techniques to define the training points of a surrogate \cite{feinberg2015chaospy}. Latin hypercube sampling \cite{mckay2000comparison}, Sobol sequence \cite{sobol1967distribution} and Hammersley sequence \cite{hammersley1960monte} are some examples of such techniques. These techniques are designed to sample from the unitary hypercube of $D$ dimensions, i.e. the uniform distributed variables: $\vw_i \sim \pdf(\vw)$. Finally, the Rosenblatt transformation is used to transform each realization in the uniform sample into the correlated input space, $\vx_i = R(\vw_i) \sim \pdf(\vx)$.
 
 The number of unknown coefficients $c_j$ in a D-dimensional PCE depends of the total polynomial order of the PCE. The total order is defined as the maximum sum of the one dimensional orders. If the PCE is truncated to a total order $M$ then the number of unknown coefficients is given by the following combination:
 
@@ -319,7 +321,7 @@ The number of model evaluations should be between 2 or 3 times the number of unk
 \subsection{Point collocation and the LASSO problem}
 \label{sec_LASSO}
 
-The least absolute shrinkage and selection operator (LASSO) problem is a modified least squares optimization problem that adds a term that penalizes the amount of active terms in the surrogate (terms with non zero coefficients). LASSO is used to achieve sparsity and to avoid over fitting in the surrogate. Additionally, the number of model evaluations required for solving the LASSO problem is smaller in comparison to a least squares regression that has the same maximum polynomial order $M$ \cite{blatman2011adaptive}.
+The least absolute shrinkage and selection operator (LASSO) problem is a modified least squares optimization problem that adds a term that penalizes the amount of active terms in the surrogate (terms with non zero coefficients). LASSO is used to achieve sparsity and to avoid over fitting in the polynomial surrogate. Additionally, the number of model evaluations required for solving the LASSO problem is smaller in comparison to a least squares regression that has the same maximum total polynomial order \cite{blatman2011adaptive}.
 
 A LASSO problem can be described as finding the set of coefficients $c_j$ that minimizes the sum of squared errors plus the sum of the absolute values of all coefficients ($\ell_1$ norm regularization term) \cite{tibshirani1996regression}:
 
@@ -327,7 +329,7 @@ A LASSO problem can be described as finding the set of coefficients $c_j$ that m
 
 \eq{\min_{c_j} \quad \sum_{i=0}^{N-1} \left[ \sum_{j=0}^{N_c-1} c_j \mpoly_j(\vw_i) - y(\vx_i) \right]^2 + \alpha \sum_{j=0}^{N_c-1} |c_j|}{}
 
-\noindent where the number of model/surrogate evaluation points $N$ is fixed. Note that the input and surrogate evaluation points are related by the Rosenblatt transformation $\vx_i=R(\vw_i)$. The maximum number of possible terms of the surrogate $N_c$ is also fixed by selecting a maximum total multi-dimensional polynomial order.
+\noindent where the number of model/surrogate evaluation points $N$ is fixed. Note that the input and surrogate evaluation points are related by the Rosenblatt transformation $\vx_i=R(\vw_i)$. The maximum number of possible terms of the surrogate $N_c$ is fixed by selecting a maximum total multi-dimensional polynomial order.
 
 The regularization coefficient $\alpha$ controls the amount of active terms in the final solution. Smaller values allow to have more active terms while larger values will prefer final surrogates with few active terms. A sparse surrogate has the advantage of making the evaluation of the multi-dimensional surrogate faster in comparison to the full least squares solution; this advantage becomes critical in high number of input dimensions.
 
@@ -392,7 +394,7 @@ The total effect Sobol index of an input variable $x_i$ is then the sum of all t
 \eq{ S_{\text{total}\,x_i} = S_{i} + \sum\limits_{\substack{k=0\\k \neq i}}^{D-1} S_{ik} + \dots}{}
 
 %The Sobol indices can be understood as, the fraction reduction in the variance of the output that could be achieved if the variance in the $i$-th variable could be suppressed.
-The sensitivity analysis of the response of the turbine should consider the effect of having different turbulent inflow realizations. The turbulent inflow is modeled with the two independent PCE for the local mean and local standard deviation. Therefore, even though the Sobol indexes could be computed directly from the PCE coefficients, see Sudret et al \cite{sudret2008global}, they would not include the effect of the turbulence inflow realization. To solve this limitation, the approximate method proposed in Saltelli et. al \cite{saltelli2010variance} is used to compute the total effect Sobol indexes. This approach estimates the total effect Sobol indexes from a large Monte-Carlo simulation.
+The sensitivity analysis of the response of the turbine should consider the effect of having different turbulent inflow realizations. The turbulent inflow is modeled with the two independent PCE for the local mean and local standard deviation. Therefore, even though the Sobol indexes could be computed directly from the PCE coefficients, see Sudret et al \cite{sudret2008global}, they would not include the effect of the turbulence inflow realization. To solve this limitation, the approximate method proposed in Saltelli et. al \cite{saltelli2010variance} is used to compute the total effect Sobol indexes. This approach estimates the total effect Sobol indexes from a large MC simulation.
 
 % Furthermore, the total effect Sobol's indexes can also be calculated using only the coefficients of the PCE \cite{sudret2008global}:
 
@@ -490,20 +492,20 @@ Seven different model outputs are considered ($\vy$), see table \ref{tab_outs}. 
 
 \subsection{Training points}
 
-In this study, the number of model evaluations are set to be $N=2\,N_c$, the maximum order of the polynomial is expected to be $M=4$ and the number of input variables is $D=4$. This leads to a total number of model evaluations of 140, see equation \ref{eq_mod_eval}. %% A small comment: I tested some other low-discrepancy series available in Matlab (Sobol, Halton), and to me the Halton sequence actually looks interesting - it may have an advantage over the Hammersley because in higher dimensions the Hammersley points tend to start looking grouped - but this doesn't seem to be the case with Halton sequence points. 
-A Hammersley sequence \cite{hammersley1960monte} is preferred over other variance reduction methods to generate the training sample in the uniform space as it is a sequence that can be extended to contain larger sample size without changing the previous points \cite{feinberg2015chaospy,hosder2007efficient}. The uniform sample is then transformed into the physical variables using the Rossenblat transformation. A similar approach is used to generate the input sample for a Monte-Carlo simulation; the only difference is the size of the sample which in this study is taken to be 80000. The training input sample is shown in Figure \ref{fig_PCE_train_x_full} as well as a the inputs sample for the Monte-Carlo simulation. Figure \ref{fig_PCE_train_x_full} is a representation of the multidimensional $\pdf(\vx)$: the histograms represent the marginal distributions for each variable, while the plots in the lower diagonal represent the training points and for the Monte-Carlo simulation it shows the bi-dimensional histograms that show the correlations between each pairs of variables as well as the iso-pdf quantiles that enclose 68\%, 95\% and 99.7\% of the data. It can be observed that the training points are more densely distributed in the regions of higher probability of the inputs. This means that the surrogate is better trained in the most likely regions of the input space.  100 different turbulent inflow realizations are generated using the Mann model for each input point, for which the mean and standard deviation of the outputs are obtained. This number is selected to test the accuracy of the prediction of the surrogates when they are trained using a reduced number of TIR as it is defined in the design load cases defined in the standard \cite{international2005iec}. The full training sample consists of $140 \times 100$ HAWC2 10 minutes simulations.
+In this study, the number of model evaluations are set to be $N=2\,N_c$, the maximum order of the polynomial is expected to be $M=4$ and the number of input variables is $D=4$. This leads to 140 total number of model evaluations, i.e. 140 input variables locations for which HAWC2 model is executed, see equation \ref{eq_mod_eval}. %% A small comment: I tested some other low-discrepancy series available in Matlab (Sobol, Halton), and to me the Halton sequence actually looks interesting - it may have an advantage over the Hammersley because in higher dimensions the Hammersley points tend to start looking grouped - but this doesn't seem to be the case with Halton sequence points. 
+A Hammersley sequence \cite{hammersley1960monte} is preferred over other variance reduction methods to generate the training sample in the uniform space as it is a sequence that can be extended to contain larger sample size without changing the previous points \cite{feinberg2015chaospy,hosder2007efficient}. The uniform sample is then transformed into the physical variables using the Rossenblat transformation. A similar approach is used to generate the input sample for a MC simulation; the size of the MC sample is taken to be 80000. The training input sample is shown in Figure \ref{fig_PCE_train_x_full} as well as a the inputs sample for the MC simulation. Figure \ref{fig_PCE_train_x_full} is a representation of the multidimensional $\pdf(\vx)$: the histograms represent the marginal distributions for each variable, while the plots in the lower diagonal represent the training points and bi-dimensional histograms of the MC sample. The figures in the lower diagonal show the correlations between each pairs of variables as well as the iso-pdf quantiles that enclose 68\%, 95\% and 99.7\% of the data. It can be observed that the training points are more densely distributed in the regions of higher probability of the inputs. This means that the surrogate is better trained in the most likely regions of the input space.  100 different turbulent inflow realizations are generated using the Mann model for each input point, for which the mean and standard deviation of the outputs are obtained. This number is selected to test the accuracy of the prediction of the surrogates when they are trained using a reduced number of TIR as it is defined in the design load cases defined in the standard \cite{international2005iec}. The full training sample consists of $140 \times 100$ HAWC2 10 minutes simulations.
 
 \begin{figure*}[h!]
 \begin{centering}
-\includegraphics[width=\linewidth]{Figures/PCE_train_x_full.jpg}
-\caption{(Black points) Training dataset in the inputs: 140 Hammersley sequence sample of input joint distribution. (Histogram colored hex-bins) 80000 Hammersley sequence sample Monte-Carlo sample.}
+\includegraphics[width=0.9\linewidth]{Figures/PCE_train_x_full.jpg}
+\caption{(Black points) Training dataset in the inputs: 140 Hammersley sequence sample of input joint distribution. (Histogram colored hex-bins) 80000 Hammersley sequence MC sample.}
 \label{fig_PCE_train_x_full}
 \end{centering}
 \end{figure*}
 
 \subsection{Example of PCE surrogates for individual statistical moments}
 
-Some examples of the distribution of  $\vy_{\expect}$ and $\vy_{\std}$ \footnote{$P_{\std}$ represents the standard deviation of 100 different realizations of the 10-min averaged power; this variable should not be confused with the standard deviation of the instantaneous power during the 10 minutes of simulation.} are shown in Figures \ref{fig_y_hat_E_V}. In this figure the black points represent the observed statistic of the output for the training points; while the bi-dimensional histogram represents the obtained distribution of the surrogate for a 80000 Monte-Carlo sample. The observed histogram in the training dataset and the PDF predicted by the surrogate for $\vy_{\expect}$ and $\vy_{\std}$ are shown in the last column in Figure \ref{fig_y_hat_E_V}. It can be observed that the surrogates accurately capture the global PDF of the model and its dependency with respect to the 4 input variables. The surrogates of the local standard deviations, $\hat{y}_{\std}$, are not able to capture the behavior of some extreme cases, see the extreme points at low wind speeds in the plots for CT$_{\std}$ and BRF$_{\std}$. These errors are small in comparison to the overall magnitude of the output; the distribution of the errors of the surrogates and its impact in the final prediction are quantified in section \ref{subsec_Convergence}. These errors can be reduced up to a tolerance level selected by the user by adding more training points (input points with their turbulent inflow realizations). The surrogates are robust enough to predict the frequency of occurrence of extreme values such as the outputs resulting from the input point with largest $\stdws$, see first and third row in figure \ref{fig_y_hat_E_V}. This point seems to be outside the main trend in $\ws$ in figure \ref{fig_y_hat_E_V} because it has a large $\stdws$ and $\shear$ given its $\ws$, see figure \ref{fig_PCE_train_x_full}.
+Some examples of the distribution of  $\vy_{\expect}$ and $\vy_{\std}$ \footnote{$P_{\std}$ represents the standard deviation of 100 different realizations of the 10-min averaged power; this variable should not be confused with the standard deviation of the instantaneous power during the 10 minutes of simulation.} are shown in Figure \ref{fig_y_hat_E_V}. In this figure the black points represent the observed statistic of the output for the training points; while the bi-dimensional histogram represents the obtained distribution of the surrogate for a 80000 MC sample. The observed histogram in the training dataset and the PDF predicted by the surrogate for $\vy_{\expect}$ and $\vy_{\std}$ are shown in the last column in Figure \ref{fig_y_hat_E_V}. It can be observed that the surrogates accurately capture the global PDF of the model and its dependency with respect to the 4 input variables. The surrogates of the local standard deviations, $\hat{y}_{\std}$, are not able to capture the behavior of some extreme cases, see the extreme points at low wind speeds in the plots for CT$_{\std}$ and BRF$_{\std}$. These errors are small in comparison to the overall magnitude of the output; the distribution of the errors of the surrogates and its impact in the final prediction are quantified in section \ref{subsec_Convergence}. These errors can be reduced up to a tolerance level selected by the user by adding more training points (input points with their turbulent inflow realizations). The surrogates are robust enough to predict the frequency of occurrence of extreme values such as the outputs resulting from the input point with largest $\stdws$, see first and third row in Figure \ref{fig_y_hat_E_V}. This point seems to be outside the main trend in $\ws$ in Figure \ref{fig_y_hat_E_V} because it has a large $\stdws$ and $\shear$ given its $\ws$, see Figure \ref{fig_PCE_train_x_full}.
 
 \begin{figure*}[h!]
 \begin{centering}
@@ -523,9 +525,12 @@ Some examples of the distribution of  $\vy_{\expect}$ and $\vy_{\std}$ \footnote
 \subsection{Final surrogate predictions}
 %%%
 
-The surrogates of $\vy_{\expect}$ and $\vy_{\std}$ are combined to estimate the distribution of each individual output of the DTU 10 MW RWT. The prediction is done by sampling the normal distribution constructed using the surrogates of $\vy_{\expect}$ and $\vy_{\std}$, see equation \ref{eq_output_distrib}. These results are presented in Figure \ref{fig_final_surrogates} along with the full dataset of HAWC2 simulations. In this figure each cross represents an individual 10-min simulation, therefore the scatter of nearby simulations illustrates the stochasticity in the output of the aeroelastic simulation. The amount of local output variability is due to the turbulent inflow realization, varies between outputs and depends on the region of the input space. The effect of the turbulent inflow realization is more important for the fatigue loads than for power and thrust coefficient. Figure \ref{fig_final_surrogates} also presents the bi-dimensional histogram obtained with a 80000 Monte-Carlo simulation of the surrogate. The distribution predicted by the surrogate captures the dependency and variability of each of model output with respect the four input variables. Additionally the surrogate enables the user to obtained a good approximation of the PDF for each variable, see fifth column in Figure \ref{fig_final_surrogates}. The obtained distribution of power shows a similar behaviour to the operational data of wind turbines; this shows that one of the main drivers for variability in the prediction of power is the TIR. Similarly, the thrust coefficient shows large variability for wind speeds below rated; this large variability can become important for wake models that use the thrust coefficient to predict the strength of the wake of a turbine and its impact on other turbines in a wind farm. The 
 
-\begin{figure}[p]
+The surrogates of $\vy_{\expect}$ and $\vy_{\std}$ are combined to estimate the distribution of each individual output of the DTU 10 MW RWT. The prediction is done by sampling the normal distribution constructed using the surrogates of $\vy_{\expect}$ and $\vy_{\std}$, see equation \ref{eq_output_distrib}. These results are presented in Figure \ref{fig_final_surrogates} along with the full dataset of HAWC2 simulations. In this figure each cross represents an individual 10-min simulation, therefore the scatter of nearby simulations illustrates the stochasticity in the output of the aeroelastic simulation. The amount of local output variability due to the turbulent inflow realization, varies between outputs and depends on the region of the input space. The effect of the turbulent inflow realization is more important for the fatigue loads than for power and thrust coefficient. Figure \ref{fig_final_surrogates} also presents the bi-dimensional histogram obtained with a 80000 MC simulation of the surrogate. The distribution predicted by the surrogate captures the dependency and variability of each output with respect the four input variables; the iso-PDF quantiles that encircle the 68\%, 95\% and 99.7\% of the MC sample are also shown in the Figure \ref{fig_final_surrogates} and they give a visual estimation of how likely are the observations of the output. It can be observed that the surrogate estimates the regions that contribute more on the lifetime fatigue and even gives an estimation of the input region on which the largest damage is to be expected. Additionally the MC simulation on the surrogate gives an estimation of the PDF for each variable, see fifth column in Figure \ref{fig_final_surrogates}. 
+
+The obtained distribution of power shows a similar behaviour to the operational data of wind turbines; this shows that one of the main drivers for variability in the prediction of power below rated is the TIR. Similarly, the thrust coefficient shows large variability for wind speeds below rated; this large variability can become important for wake models that use the thrust coefficient to predict the strength of the wake of a turbine and its impact on other turbines in a wind farm. The fatigue load blade root and tower top bending moments (BRF, TTT and TTY) show similar dependency on the four input variables and a similar amount of variability due to TIR; this is because they are all driven by the streamwise flow field. The fatigue loads tower bottom bending moments (TBF and TBS) show a different dependency on the input variables, mainly because they are driven by the thrust and sidewise forces; this two outputs have larger variability at lower WS which generate both the largest and lowest observations.  
+
+\begin{figure*}[p]
 \begin{centering}
 \includegraphics[width=\linewidth]{Figures/Full_surrogate_red_file/P_PCE_MC_surrogate_last_row.jpg} \\
 \includegraphics[width=\linewidth]{Figures/Full_surrogate_red_file/CT_PCE_MC_surrogate_last_row.jpg} \\
@@ -534,63 +539,109 @@ The surrogates of $\vy_{\expect}$ and $\vy_{\std}$ are combined to estimate the 
 \includegraphics[width=\linewidth]{Figures/Full_surrogate_red_file/TBSBM_EFL_M4_PCE_MC_surrogate_last_row.jpg} \\
 \includegraphics[width=\linewidth]{Figures/Full_surrogate_red_file/TTTBM_EFL_M4_PCE_MC_surrogate_last_row.jpg} \\
 \includegraphics[width=\linewidth]{Figures/Full_surrogate_red_file/TTYBM_EFL_M4_PCE_MC_surrogate_last_row.jpg}
-\caption{(Black points) Training dataset in the outputs: 140 Hammersley sequence sample x 100 turbulent inflow realizations. (Histogram colored hex-bins) 80000 Monte-Carlo simulation of the surrogate.}
+\caption{(Black crosses) 10-min HAWC2 simulation for the 140 input sample x 100 turbulent inflow realizations. (Histogram colored hex-bins) 80000 Monte-Carlo simulation of the surrogate. (Contour lines) Iso-PDF lines that encircle 68\%, 95\% and 99.7\% of the Monte-Carlo simulation on the surrogate.}
 \label{fig_final_surrogates}
 \end{centering}
-\end{figure}
+\end{figure*}
 
 \subsection{Sensitivity analysis}
 
-The global sensitivity analysis (SA) for the outputs are presented in table \ref{tab_sens}. The total effect Sobol indexes are computed using the approximation presented by Saltelli et al \cite{saltelli2010variance}. The total effect Sobol indexes represents the non-linear influence of the input variable in the total variance of the output. Most of the outputs have a large total Sobol index for the wind speed. $\ws$ is clearly the main variable to explain the power and loads in a wind turbine. The SA shows that the local expected value of power and thrust coefficient can be explained almost fully with $\ws$.
+The global sensitivity analysis (SA) for the outputs are presented in Table \ref{tab_sens}. The total effect Sobol indexes are computed using the approximation presented by Saltelli et al \cite{saltelli2010variance}. The total effect Sobol index represents the non-linear influence of the input variable in the total variance of the output. Most of the outputs have a large total Sobol index for the wind speed. $\ws$ is clearly the main variable to explain the power and loads in a wind turbine. The SA shows that the power and thrust coefficient can be explained almost fully by the $\ws$, since all the terms in the surrogate have WS dependency. 
 
-The variance introduced by the turbulent inflow realization is an important component for all the outputs, it has a higher influence than $\stdws$ for most outputs. This counterintuitive result is due to the large amount of correlation between $\ws$ and $\stdws$, therefore a large fraction of the variance due to $\stdws$ is already explained by $\ws$. The shear and yaw have reduced effects over most output variables. The yaw miss alignment has reduced total effect because its assumed distribution is centered around zero. The shear exponent becomes important only for capturing the fatigue at the tower top tilt and yaw bending moments (TTT, TTY); while the yaw misalignment becomes important for modeling the fatigue at the tower bottom fore-aft moment (TBF).
+The variance introduced by the turbulent inflow realization is an important component for all the outputs, it has a higher influence than $\stdws$ for most outputs. This counter intuitive result is due to the large amount of correlation between $\ws$ and $\stdws$; this causes that a large fraction of the variance of the output generated by $\stdws$ is already explained by $\ws$. The shear and yaw have reduced effects over most output variables. The yaw miss alignment has reduced total effect because its assumed distribution is centered around zero. The shear exponent becomes important only for capturing the fatigue at the tower top tilt and yaw bending moments (TTT, TTY); while the yaw misalignment becomes important for modeling the fatigue at the tower bottom fore-aft moment (TBF).
 
 \begin{table}[!h]
 \begin{centering}
-\resizebox{0.8\linewidth}{!}{
-\begin{tabular}{cccccc}
+\resizebox{0.5\linewidth}{!}{
+\begin{tabular}{c|ccccc}
 \hline
-Output &      $\ws$ &  $\stdws$ &   $\shear$ &     $\yaw$ &  Turb\_realization \\
+ &      $\ws$ &  $\stdws$ &   $\shear$ &     $\yaw$ &  TIR \\
 \hline
-\\[-1em]
-P             & $1$ &   $3\times 10^{-4}$ &  $3\times 10^{-4}$ & $1\times 10^{-4}$ &      $4\times 10^{-3}$ \\
- & 1st & 3rd-4th & 3rd-4th & 5th & 2nd \\
-\hline
-\\[-1em]
-CT            & $1$ &   $1\times 10^{-3}$ &  $1\times 10^{-3}$ & $7\times 10^{-4}$ &      $1\times 10^{-2}$ \\
- & 1st & 3rd-4th & 3rd-4th & 5th & 2nd \\
-\hline
-\\[-1em]
-BRF & $9\times 10^{-1}$ &   $5\times 10^{-2}$ &  $1\times 10^{-2}$ & $3\times 10^{-3}$ &      $7\times 10^{-2}$ \\
+&&&&&\\[-1em]
+P             & 1.0 &  $2.4\times 10^{-4}$ & $3.1\times 10^{-4}$ & $8.1\times 10^{-5}$ &     $3.1\times 10^{-3}$ \\
  & 1st & 3rd & 4th & 5th & 2nd \\
 \hline
-\\[-1em]
-TBF  & $6\times 10^{-1}$ &   $2\times 10^{-1}$ &  $3\times 10^{-4}$ & $1\times 10^{-3}$ &      $3\times 10^{-1}$ \\
+&&&&&\\[-1em]
+CT            & $9.9\times 10^{-1}$ &  $1.2\times 10^{-3}$ & $1.3\times 10^{-3}$ & $6.5\times 10^{-4}$ &     $9.8\times 10^{-3}$ \\
+ & 1st & 3rd & 4th & 5th & 2nd \\
+\hline
+&&&&&\\[-1em]
+BRF & $8.8\times 10^{-1}$ &  $5.6\times 10^{-2}$ & $1.5\times 10^{-2}$ & $3.4\times 10^{-3}$ &     $6.7\times 10^{-2}$ \\
+ & 1st & 3rd & 4th & 5th & 2nd \\
+\hline
+&&&&&\\[-1em]
+TBF  & $5.9\times 10^{-1}$ &  $2.1\times 10^{-1}$ & $3.6\times 10^{-4}$ & $1.0\times 10^{-3}$ &     $3.0\times 10^{-1}$ \\
  & 1st & 3rd & 5th & 4th & 2nd \\
 \hline
-\\[-1em]
-TBS  & $7\times 10^{-1}$ &   $7\times 10^{-2}$ &  $2\times 10^{-3}$ & $2\times 10^{-4}$ &      $3\times 10^{-1}$ \\
- & 1st & 3rd & 4th-5th & 4th-5th & 2nd \\
+&&&&&\\[-1em]
+TBS  & $7.1\times 10^{-1}$ &  $7.6\times 10^{-2}$ & $2.1\times 10^{-3}$ & $2.3\times 10^{-4}$ &     $3.0\times 10^{-1}$ \\
+ & 1st & 3rd & 5th & 4th & 2nd \\
 \hline
-\\[-1em]
-TTT  & $9\times 10^{-1}$ &   $7\times 10^{-2}$ &  $3\times 10^{-4}$ & $6\times 10^{-4}$ &      $8\times 10^{-2}$ \\
- & 1st & 2nd-3rd & 4th & 5th & 2nd-3rd \\
+&&&&&\\[-1em]
+TTT  & $8.7\times 10^{-1}$ &  $7.1\times 10^{-2}$ & $3.3\times 10^{-4}$ & $5.7\times 10^{-4}$ &     $7.7\times 10^{-2}$ \\
+ & 1st & 3rd & 5th & 4th & 2nd \\
 \hline
-\\[-1em]
-TTY  & $9\times 10^{-1}$ &   $7\times 10^{-2}$ &  $2\times 10^{-4}$ & $1\times 10^{-3}$ &      $7\times 10^{-2}$ \\
- & 1st & 3rd-4th & 3rd-4th & 5th & 2nd
+&&&&&\\[-1em]
+TTY  & $8.7\times 10^{-1}$ &  $6.8\times 10^{-2}$ & $2.2\times 10^{-4}$ & $9.6\times 10^{-4}$ &     $7.2\times 10^{-2}$ \\
+ & 1st & 3rd & 5th & 4th & 2nd \\
+\hline
 \end{tabular}}
-\caption{Total sensitivity indexes (Total influence Sobol indexes).}
+\caption{Total influence Sobol index.}
 \label{tab_sens}
 \end{centering}
 \end{table}
+
+The sensitivity analysis conditioned on WS for the outputs are presented in Table \ref{tab_sens_ws}. It can be observed that for power and thrust coefficient the influence of TIR goes from being the main source of variability at WS below rated to become the least important for WS above rated; this result summarizes the influence of the pitch controller enforcing the power and limiting the thrust. The effect of TIR in the fatigue loads is more uniform through all the ranges of operation. Similarly to the global SA , the main variables required to explain the equivalent fatigue loads are TIR and $\stdws$. This is also true for the power and thrust coefficient for WS bellow rated.
+
+\begin{table}[!h]
+\begin{centering}
+\resizebox{\linewidth}{!}{
+\begin{tabular}{c|cccc|cccc|cccc}
+\hline
+& \multicolumn{4}{c|}{WS=8 $m s^{-1}$} & \multicolumn{4}{c|}{WS=12 $m s^{-1}$} & \multicolumn{4}{c} {WS=16 $m s^{-1}$} \\
+ &  $\stdws$ &   $\shear$ &     $\yaw$ &  TIR & $\stdws$ &   $\shear$ &     $\yaw$ &  TIR & $\stdws$ &   $\shear$ &     $\yaw$ &  TIR \\
+\hline
+&&&&&&&&&&&&\\[-1em]
+P             &  $1.1\times 10^{-1}$ & $1.4\times 10^{-1}$ & $2.8\times 10^{-2}$ &     $7.9\times 10^{-1}$ &  $7.8\times 10^{-2}$ & $3.7\times 10^{-2}$ & $2.5\times 10^{-2}$ &     $9.8\times 10^{-1}$  &  3.0 & 1.6 & 3.7 &     $9.7\times 10^{-1}$ \\
+ &  3rd & 2nd & 4th & 1st &  2nd & 3rd & 4th & 1st & 2nd & 3rd & 1st & 4th \\
+\hline
+&&&&&&&&&&&&\\[-1em]
+CT            &  $5.1\times 10^{-2}$ & $1.1\times 10^{-1}$ & $3.7\times 10^{-2}$ &     $8.6\times 10^{-1}$ &  $2.4\times 10^{-1}$ & $2.1\times 10^{-1}$ & $1.5\times 10^{-1}$ &     $6.4\times 10^{-1}$  &  $6.1\times 10^{-1}$ & $4.3\times 10^{-1}$ & $3.3\times 10^{-1}$ &     $2.0\times 10^{-1}$ \\
+ &  3rd & 2nd & 4th & 1st & 2nd & 3rd & 4th & 1st  &  1st & 2nd & 3th & 4th \\
+\hline
+&&&&&&&&&&&&\\[-1em]
+BRF &  $4.8\times 10^{-1}$ & $3.3\times 10^{-2}$ & $1.1\times 10^{-2}$ &     $5.0\times 10^{-1}$ &  $3.9\times 10^{-1}$ & $1.0\times 10^{-1}$ & $9.2\times 10^{-3}$ &     $5.1\times 10^{-1}$  &  $3.5\times 10^{-1}$ & $1.8\times 10^{-1}$ & $2.7\times 10^{-2}$ &     $4.6\times 10^{-1}$ \\
+ &  2nd & 3rd & 4th & 1st &  2nd & 3rd & 4th & 1st & 2nd & 3rd & 4th & 1st \\
+\hline
+&&&&&&&&&&&&\\[-1em]
+TBF &  $3.7\times 10^{-1}$ & $4.6\times 10^{-4}$ & $1.9\times 10^{-3}$ &     $6.5\times 10^{-1}$ &  $5.6\times 10^{-1}$ & $2.1\times 10^{-3}$ & $1.9\times 10^{-3}$ &     $4.5\times 10^{-1}$  &  $5.2\times 10^{-1}$ & $3.6\times 10^{-3}$ & $4.0\times 10^{-3}$ &     $4.8\times 10^{-1}$ \\
+ &  2nd & 4th & 3rd & 1st &  1st & 3rd & 4th & 2nd & 1st & 4th & 3rd & 2nd \\
+\hline
+&&&&&&&&&&&&\\[-1em]
+TBS &  $1.9\times 10^{-1}$ & $3.2\times 10^{-3}$ & $6.8\times 10^{-4}$ &     $8.3\times 10^{-1}$ &  $2.4\times 10^{-1}$ & $8.7\times 10^{-4}$ & $1.7\times 10^{-3}$ &     $7.8\times 10^{-1}$  &  $2.2\times 10^{-1}$ & $1.4\times 10^{-3}$ & $1.5\times 10^{-3}$ &     $7.9\times 10^{-1}$ \\
+ &  2nd & 3rd & 4th & 1st & 2nd & 4th & 3rd & 1st & 2nd & 4th & 3rd & 1st \\
+\hline
+&&&&&&&&&&&&\\[-1em]
+TTT &  $5.6\times 10^{-1}$ & $2.2\times 10^{-3}$ & $4.0\times 10^{-3}$ &     $4.5\times 10^{-1}$ &  $4.6\times 10^{-1}$ & $1.3\times 10^{-3}$ & $3.6\times 10^{-3}$ &     $5.5\times 10^{-1}$  &  $4.6\times 10^{-1}$ & $2.5\times 10^{-3}$ & $3.5\times 10^{-3}$ &     $5.4\times 10^{-1}$ \\
+ &  1st & 3rd & 4th & 2nd &  2nd & 4th & 3rd & 1st & 2nd & 4th & 3rd & 1st \\
+\hline
+&&&&&&&&&&&&\\[-1em]
+TTY &  $5.3\times 10^{-1}$ & $1.9\times 10^{-3}$ & $1.9\times 10^{-3}$ &     $4.8\times 10^{-1}$ &  $4.6\times 10^{-1}$ & $5.6\times 10^{-4}$ & $4.5\times 10^{-3}$ &     $5.5\times 10^{-1}$  &  $4.7\times 10^{-1}$ & $1.7\times 10^{-3}$ & $1.2\times 10^{-2}$ &     $5.3\times 10^{-1}$ \\
+ &  1st & 3rd & 4th & 2nd &  2nd & 4th & 3rd & 1st & 2nd & 4th & 3rd & 1st \\
+\hline
+\end{tabular}}
+\caption{Total influence Sobol index at different WS.}
+\label{tab_sens_ws}
+\end{centering}
+\end{table}
+
 
 
 
 \subsection{Convergence}
 \label{subsec_Convergence}
 
-A leave-one-out cross-validation (LOO) is done to estimate the distribution of the prediction error of each surrogate as a function of the number of independent turbulent seeds. A LOO is equivalent to a k-fold validation in which the number of folds is the number of data points. This means that the surrogate is trained using 139 input points with a different number of turbulent inflow realizations per input point. Then, the local statistical moments of the output predicted by the surrogates at the missing point are compared against the statistics computed using the full 100 realizations. In this article, the prediction errors are normalized with respect to the maximum scale of the output variable, which means that the errors represent the fraction of the total scale that should be considered as an extra uncertainty due to the inadequacy of the surrogate. The prediction error for the local mean surrogate is defined as:
+A leave-one-out cross-validation (LOO) is done to estimate the distribution of the prediction error of each surrogate as a function of the number of independent turbulent seeds. A LOO is equivalent to a k-fold validation in which the number of folds is the number of data points. This means that the surrogate is trained using 139 input points with a different number of turbulent inflow realizations per input point. Then, the local statistical moments of the output predicted by the surrogates at the missing point are compared against the statistics computed using the full 100 model outputs with different TIR. In this article, the prediction errors are normalized with respect to the maximum scale of the output variable, which means that the errors represent the fraction of the total scale that should be considered as an extra uncertainty due to the inadequacy of the surrogate. The prediction error for the local mean surrogate is defined as:
 
 \eq{\eyE = \frac{y_{\expect}(\vx_{LO}) - \hat{y}_{\expect}(\vx_{LO})}{\max(y)}}{}
 
@@ -602,11 +653,11 @@ A leave-one-out cross-validation (LOO) is done to estimate the distribution of t
 
 %\eq{CV_A = \frac{\int_{-\infty}^{\infty} |CDF(y_{PCE}|\vx=\vx_{LO})-CDF_{emp}(y|\vx=\vx_{LO})|\, dy}{\max(y)}}{eq_CV_A}
 
-The convergence of the prediction error of the statistical moments is shown in figure \ref{fig_convergence}. It can be seen that all the prediction errors tend to be distributed around zero and their standard deviations converge as the number of turbulent inflow realizations per input are increased. The errors converge to the distribution of the errors to the current surrogate. New input points need to be added to the training data set in order to further narrow the converged distribution of surrogate errors. In this figure the outliers are the extreme cases of selecting seeds with similar outputs, therefore, they are those cases that have large errors in the statistical moments. Finally, the converged distribution can be used to estimate the uncertainty in the final prediction of the output as:
+The convergence of the prediction error of the statistical moments is shown in Figure \ref{fig_convergence}. It can be seen that all the prediction errors tend to be distributed around zero and their standard deviations converge as the number of turbulent inflow realizations per input are increased. The errors converge to the distribution of the errors to the current surrogate. New input points need to be added to the training data set in order to further narrow the converged distribution of surrogate errors. In this figure the outliers are the extreme cases of selecting seeds with similar outputs, therefore, they are those cases that have large errors in the statistical moments. Finally, the converged distribution can be used to estimate the uncertainty in the final prediction of the output as:
 
 \eq{\hat{y}(\vx) \sim \text{Normal} (\hat{y}_{\expect}(\vx)+\eyE \, max(y), \quad \hat{y}_{\std}(\vx)+\eyS \, max(y))}{eq_output_distrib_U}
 
-\noindent where the errors of the surrogates can be sampled from the distribution predicted using LOO cross validation, see figure \ref{fig_convergence}:
+\noindent where the errors of the surrogates can be sampled from the distribution predicted using LOO cross validation, see Figure \ref{fig_convergence}:
 
 \eq{\eyE \sim \text{Normal}(\expect(\eyE),\std(\eyE)) \quad \eyS \sim \text{Normal}(\expect(\eyS),\std(\eyS))}{}
 
@@ -634,19 +685,30 @@ The convergence of the prediction error of the statistical moments is shown in f
 \subsection{Example of using the surrogates for the estimation of the  uncertainty in annual energy production and lifetime equivalent fatigue loads}
 \label{subsec_Final_EX}
 
-This section presents an example to illustrate the use of the surrogates of the DTU 10 MW RWT to estimate the uncertainty in the yearly distribution of annual energy production and of equivalent fatigue loads. A single turbine is planned to operate in a location from which the yearly variability of wind resources has been studied during a long term (more than 20 years) campaign. The distribution of the variability of the wind resources is presented in the table \ref{tab_Unc_resource}. The main difference with the distribution used for training the surrogates is the fact that the $\ws$ follows a Weibull distribution with uncertain shape and scale parameters. This distribution of the Weibull parameters is used to characterize the year-to-year variability in the wind resources. Subsequently, the conditional distributions of $\stdws$, $\shear$ and $\yaw$ follow the same dependency described in the table \ref{tab_ins}.
+This section presents an example to illustrate the use of the surrogates of the DTU 10 MW RWT to estimate the uncertainty in the distribution of expected energy production and of equivalent fatigue loads $\expect_{\vx}(\vy)$ in a given return period; here the averaging period is either 1 year or 20 years. In this example a single turbine is planned to operate in a location from which the uncertainty in the wind resources has been estimated before hand. This uncertainty can represent the year-to-year variability, the effect of the long-term correction, uncertainty in the wind resources assessment tool, among other sources of uncertainty. The propagation of uncertainty is done in two steps as described in the Figure \ref{fig_2_UQ}. The inner level predicts the distribution of the turbine outputs $\pdf(\vy)$ given a joint distribution of the turbulent inflow parameters $\pdf(\vx)$ . In the outer level the uncertainty in the resources is propagated through the inner level to estimate the distribution of the expected value of each output.
 
-\begin{table}[!h]
+\begin{figure*}[h!]
 \begin{centering}
-\resizebox{0.6\linewidth}{!}{
+\includegraphics[width=0.8\linewidth]{Figures/2level_propagation.pdf}
+\caption{2 levels of propagation of uncertainty.}
+\label{fig_2_UQ}
+\end{centering}
+\end{figure*}
+
+The distribution of the variability of the wind resources is presented in the table \ref{tab_Unc_resource}. The main difference with the distribution used for training the surrogates is the fact that the $\ws$ follows a Weibull distribution with uncertain shape and scale parameters. This distribution of the Weibull parameters is used to characterize the variability/uncertainty in the wind resources. Nevertheless, the conditional distributions of $\stdws$, $\shear$ and $\yaw$ with respect WS follow the same dependency described in the table \ref{tab_ins}. 
+
+\begin{multicols}{2}
+\begin{table}[H]
+\begin{centering}
+\resizebox{\linewidth}{!}{
 \begin{tabular}{cccc}
     \hline
     Variable & Distribution & \multicolumn{2}{c}{Parameters} \\
     \hline
     \\[-0.6em]
-    $A$ & Normal & $\mu_A=9$ & $\sigma=0.5$ m/s\\
+    $A$ & Normal & $\mu_A=9$ & $\sigma_A=0.5$ m/s\\
     \\[-0.6em]
-    $k$ & Normal & $\mu_A=2$ & $\sigma=0.1$ \\
+    $k$ & Normal & $\mu_k=2$ & $\sigma_k=0.1$ \\
     \\[-0.6em]
     \hline
     \\[-0.6em]
@@ -665,14 +727,25 @@ This section presents an example to illustrate the use of the surrogates of the 
 \end{centering}
 \end{table}
 
-The propagation of uncertainty of this case is done in two steps. Initially a PCE with Gaussian quadrature is used to determine the nodes and weights of the distributions of the Weibull parameters $A$ and $k$, see equation \ref{eq_projection}. Each of these nodes represent the Weibull parameters in a given year. For each of these nodes, a large sample of the inputs of the surrogate, $\vx=[\ws, \stdws, \shear, \yaw]$, is generated. The size of the sample is the number of 10-min cases in a year: $365\times24\times6=52,560$ cases. The power and EFL are evaluated using the surrogate and the mean power and mean EFL for that year are calculated. Each individual surrogate evaluation has its own realization of the local distribution of the outputs due to the turbulence inflow realization, see equation \ref{eq_output_distrib}. Additionally, the effect of the errors of the surrogate can also be considered, by sampling the distribution of the errors for each evaluation of the outputs, see equation \ref{eq_output_distrib_U}. The results of the yearly distribution of capacity factor and of yearly equivalent loads are presented in figure \ref{fig_AEP_U}. There is no differences in the distributions of annual capacity factor or mean EFL obtained using the surrogate or the ones obtained including the uncertainty of the surrogate. The distribution in the capacity factor shows a negative skewness or a heavier tail for smaller values, which means that the p90 is smaller than the one predicted using a normal distribution. On the contrary, the annual distribution of mean TBF shows a positive skewness, which means that in certain years the accumulated fatigue damage for the tower can be much larger than average. The distribution of mean BRF is symmetric, but has heavier tails than a normal distribution.
+\begin{figure}[H]
+\begin{centering}
+\includegraphics[width=0.6\linewidth]{Figures/U_AEP/Resources_PCE.pdf}
+\caption{Joint distribution of the Weibull parameters and semi-spectral projection nodes for outer level propagation of uncertainty.}
+\label{fig_outer_PCE}
+\end{centering}
+\end{figure}
+\end{multicols}
+
+The propagation of uncertainty in the outer level is done using both a 1000 MC sample and a PCE with semi-spectral projection, for which a total of 25 Weibull parameters nodes are evaluated with their corresponding Gaussian quadrature weights, see Figure \ref{fig_outer_PCE} and equation \ref{eq_projection}. Each node or element of the outer level MC sample represents a realization of the wind resources in a given year. For each of these nodes, a large inner level sample of the inputs of the surrogate, $\vx=[\ws, \stdws, \shear, \yaw]$, is generated. The size of the inner level MC sample is the number of 10-min cases in a year, $365\times24\times6=52,560$ cases. The power and EFL are evaluated using the surrogate and the mean power and mean EFL for a given year are calculated $\expect_{\vx}(\vy)$. Each individual surrogate evaluation has its own realization of the local distribution of the outputs due to the turbulence inflow realization, see equation \ref{eq_output_distrib}. Additionally, the effect of the errors of the surrogate are considered, by sampling the distribution of the errors for each evaluation of the outputs, see equation \ref{eq_output_distrib_U}. There is no differences in the distributions of  $\expect_{\vx}(\vy)$ obtained using the surrogate or the ones obtained including the uncertainty of the surrogate due to the large sample size of the inner level (52 560); this means that the errors of the surrogate cancel out when computing their mean on a given year. 
+
+A 1000 MC sample of the distribution of one year $\expect_{\vx}(\vy)$ is generated using the PCE of the outer level in order to have an equivalent database of 1000 years as the one obtained in the outer MC simulation. A bootstrap of the outer level sample is used to estimate the variation in the expected value during 20 years of operation. This means that the average of 20 randomly selected years is computed for several realizations of 20 years. The central limit theorem is also used to estimate the distribution of the average of 20 randomly selected (independent) years. The distributions of the 1 year and 20 years capacity factor and expected equivalent fatigue loads are presented in Figure \ref{fig_AEP_U}. It can be observed how the 20-year-averaged distribution has a narrower distribution, $\sigma_{20yr} = \sigma_{1yr}/\sqrt{20}$. Note that the yearly distribution of average output is required in order to estimate the uncertainty in the 20-year-averaged output. In this example coefficient of variations (CoV = $\sigma/\mu$) of 5.6\% for the scale parameter and 5\% for the shape parameter of the WS distribution give a coefficient of variation of 2.4\% in AEP and a 9.5\% in year-to-year expected power production. The coefficient of variation in the 20-year-averaged BRF is 1.8\% while the CoV of the year-to-year expected BRF is 6.1\%. The CoV for the TBF are 0.5\% for the 20-year-averaged and 2.0\% for the year-to-year variation. Note that this coefficients of variations will be increased if the correlation between the WS and the other turbulent inflow parameters changes from year to year.
 
 \begin{figure}[h!]
 \begin{centering}
 \includegraphics[width=0.32\columnwidth]{Figures/U_AEP/AEP_U.pdf}
 \includegraphics[width=0.32\columnwidth]{Figures/U_AEP/E_BRFBM_U.pdf}
 \includegraphics[width=0.32\columnwidth]{Figures/U_AEP/E_TBFBM_U.pdf}
-\caption{Distribution of yearly distribution of capacity factor and of yearly BRF and TBF equivalent loads. (Black) Surrogate. (Red) Surrogate and surrogate prediction errors.}
+\caption{Distribution of the capacity factor and of the expected BRF and TBF equivalent loads. (Red) PCE distribution of the 1 year expected output. (Orange) 1000 MC sample of the 1 year expected output. (Black) Central limit distribution of 20-year-averaged output. (Purple) 1000 Bootstraps of the 20-year-averaged output.}
 \label{fig_AEP_U}
 \end{centering}
 \end{figure}
@@ -680,24 +753,29 @@ The propagation of uncertainty of this case is done in two steps. Initially a PC
 
 \section{Discussion}
 
-The present article presents a methodology to implement sparse polynomial surrogates for aeroelastic wind turbine models. PCE are widely used in the uncertainty quantification field due to their efficiency to compute the statistical properties of the output and because the sensitivity analysis is obtained without any additional effort. The main two limitations in the use of PCE for wind energy are: (1) The input atmospheric parameters are usually jointly distributed with several layers of dependency (2) Some of the output have discontinuities and/or are restricted to certain values (e.g. only positive). The present article has shown how to solve this two problems: the implementation of an iso-probabilistic transformation to de-correlate the inputs, and  the use of a logistic transformation to implement restrictions on the outputs. The benefits of using the logistic transformation can be seen in figure \ref{fig_y_hat_E_V}, note that the PCE do not present oscillations in the constant regions, as it can be seen for P$_{\expect}$, for P$_{\std}$ and CT$_{\std}$.
+The present article presents a methodology to implement sparse polynomial surrogates for aeroelastic wind turbine models. PCE are widely used in the uncertainty quantification field due to their efficiency to compute the statistical properties of the output and because the sensitivity analysis is obtained without any additional effort. The main two limitations in the use of PCE for wind energy are: (1) The input atmospheric parameters are usually jointly distributed with several layers of dependency (2) Some of the output have discontinuities and/or are restricted to certain values (e.g. only positive). The present article has shown how to solve this two problems: the implementation of an iso-probabilistic transformation to de-correlate the inputs, and  the use of a logistic transformation to implement restrictions on the outputs. The benefits of using the logistic transformation can be seen in Figure \ref{fig_y_hat_E_V}, note that the PCE do not present oscillations in the constant regions, as it can be seen for P$_{\expect}$, for P$_{\std}$ and CT$_{\std}$.
 
 The final surrogate can be used to generate an output sample that covers the full output space, and that will predict the general details of the distributions of the outputs. One of the main limitations of the present surrogates is that the local distribution of the output is assumed to be normal, this is not the case for the operating region close to rated wind speed. Since this assumption only affects the turbulent inflow realization, it is considered to be an acceptable approximation. The local distributions of most outputs are not normal in reality, because the wind turbine controller has different strategies in each operating region, which creates skewness in the local distributions.
 
-The results presented in this article show that there are multiple dependencies between the input variables as well as between inputs and outputs. Such complicated inter-dependencies are difficult to capture when applying other methods such as interpolation or Gaussian processes. For example, advanced interpolation methods such as radial basis functions will not account for the likelihood of an extreme training point and will generate trends that always pass through all the model observations. This behavior penalizes the capacity of the surrogate to generalize and to predict the output in new conditions. The sparse PCE are ideal for this class of problems because the k-fold cross validation is a step inside the training. Additionally, the correlations between the outputs are fully captured when using the presented surrogates; this occurs because each of the outputs has a dependency on the inputs. The full pair plot of the training dataset and the resulting surrogate for all inputs and outputs is presented in the acompa. % What is "acompa"? I guess you have missed a few words in the end of this sentence.
+The results presented in this article show that there are multiple dependencies between the input variables as well as between inputs and outputs. Such complicated inter-dependencies are difficult to capture when applying other methods such as interpolation or Gaussian processes. For example, advanced interpolation methods such as radial basis functions will not account for the likelihood of an extreme training point and will generate trends that always pass through all the model observations. This behavior penalizes the capacity of the surrogate to generalize and to predict the output in new conditions. The sparse PCE are ideal for this class of problems because the k-fold cross validation is a step inside the training. Additionally, the correlations between the outputs are fully captured when using the presented surrogates; this occurs because each of the outputs has a dependency on the inputs. The full pair plot of the training dataset and the resulting surrogate for all inputs and outputs is presented in the extra material accompanying this article. % What is "acompa"? I guess you have missed a few words in the end of this sentence.
 
-The final results show a promising new approach to communicate the performance characteristics of a wind turbine between the turbine manufacturers and project developers. The wind turbine producers normally do not share the detailed structural and aerodynamic model information of their products due to intellectual property concerns. As a result, often the wind project planners and operators do not have the full information about the expected performance of a turbine at the site they are developing. Furthermore, typically there is no model for the uncertainty of the turbine performance. A possible application of the multiple polynomial surrogate could involve fitting the model by the manufacturer, and consequent distribution of the surrogate to users and clients. With this approach, project developers could get a useful tool for assessing site feasibility including uncertainty estimation, while not requiring access to detailed engineering models. Consequently, the use of more refined site assessment can potentially lead to improved overall estimation of levelized cost of energy and its uncertainty.
+The final results presented in Figures \ref{fig_final_surrogates} and \ref{fig_AEP_U} show a promising new approach to communicate the performance characteristics of a wind turbine between the turbine manufacturers and project developers. The wind turbine producers normally do not share the detailed structural and aerodynamic model information of their products due to intellectual property concerns. As a result, often the wind project planners and operators do not have the full information about the expected performance of a turbine at the site they are developing. Furthermore, typically there is no model for the uncertainty of the turbine performance. A possible application of the multiple polynomial surrogates of a wind turbine could involve fitting the model by the manufacturer, and consequent distribution of the surrogate to users and clients. With this approach, project developers could get an useful tool for assessing site feasibility including uncertainty estimation, while not requiring access to detailed engineering models. Consequently, the use of more refined site assessment can potentially lead to improved overall estimation of levelized cost of energy and its uncertainty.
 
-Obtaining the $\pdf(P)$ and $\pdf(EFL)$ is useful as they can be used for uncertainty estimation of the levelized cost of energy on a yearly basis. The surrogates can be evaluated on a long time series of the local wind resources (in multiple variables) such as the ones predicted by wind resource forecast (WRF) models without considerable extra computational effort. The power surrogate can then predict the annual variation of energy production while the EFL can be used to estimate the operation and maintenance costs. Such a probabilistic output can as an input to an e.g. decision support tool.
+Obtaining the $\pdf(P)$ and $\pdf(EFL)$ is useful as they can be used for uncertainty estimation of the levelized cost of energy on a yearly basis. The surrogates can be evaluated on a long time series of the local wind resources (in multiple variables) such as the ones predicted by wind resource forecast (WRF) models without considerable extra computational effort. The power surrogate can then predict the annual variation of energy production while the EFL can be used to estimate the operation and maintenance costs. Such a probabilistic output can be the input to a decision support tool.
 
-A surrogate of the DTU 10 MW RWT within a 4-dimensional turbulent inflow parameter space can be built using only 140 input cases (with multiple turbulent inflow realizations per case) and can be used to predict the distribution of the power, thrust coefficient and equivalent fatigue loads on the turbine. In contrast, traditional approaches require in the order of $20^4$ gridsearch/interpolation (full factorial design with  20 points per dimension) or $10^5-10^6$ variance reduction Monte-Carlo sample of the inputs \cite{dimitrov2015model}. Furthermore, the present approach enables to build an uncertainty model around the 10 minutes performance of the turbine that captures the effect of the turbulent inflow realization.
+A surrogate of the DTU 10 MW RWT within a 4-dimensional turbulent inflow parameter space can be built using only 140 input cases (with multiple turbulent inflow realizations per case) and can be used to predict the distribution of the power, thrust coefficient and equivalent fatigue loads on the turbine. In contrast, traditional approaches require in the order of $20^4$ gridsearch/interpolation (full factorial design with  20 points per dimension) or $10^5-10^6$ variance reduction MC sample of the inputs \cite{dimitrov2015model}. Furthermore, the present approach enables to build an uncertainty model around the 10 minutes performance of the turbine that captures the effect of the turbulent inflow realization.
 
 The combined PCE surrogate approach can also be used to improve traditional conservative designs in which a worst case scenario for shear and turbulence intensity is considered. The fast evaluation of the joint probability distributions for loads based on the surrogate model opens possibilities for performing structural reliability analysis and probability based design.
 
 \section{Conclusions}
 
-In the present study, a PCE-based polynomial surrogate model of wind turbine fatigue loads and energy output was defined and demonstrated for the DTU 10 MW reference wind turbine.
-Using only 140 input cases was found to be sufficient for building a surrogate of the DTU 10MW model within a 4-dimensional turbulent inflow parameter space. The presented approach was demonstrated as an efficient alternative of the traditional techniques for characterizing the global behavior of an aeroelastic wind turbine model under multiple uncertain turbulent inflow parameters. % I've moved all the following paragraphs to the discussion - I think they belong there. In the conclusion, we should be more concise and concrete and outline the major findings from what we've done, not speculations on what this can be used for. So I would maybe add a few more sentences to the conclusion (e.g. the explained variance from Sobol indexes).
+In the present study, a polynomial surrogate model of wind turbine fatigue loads and energy output was defined and demonstrated for the DTU 10 MW reference wind turbine. Using only 140 input cases was found to be sufficient for building a surrogate of the DTU 10MW model within a 4-dimensional turbulent inflow parameter space. The presented approach was demonstrated as an efficient alternative of the traditional techniques for characterizing the global behavior of an aeroelastic wind turbine model under multiple uncertain turbulent inflow parameters. 
+
+The surrogate has enable to perform a global sensitivity analysis on the DTU 10 MW turbine. This study showed that the hub height wind speed is the most important variable to predict the power of the turbine, followed by the turbulent inflow realization (TIR); this is a consequence of the correlation between turbulence intensity, shear and hub height wind speed. The turbulence intensity is of similar  importance as the TIR in the prediction of blade root flapwise  (BRF), and tower top tilt (TTT) and yaw (TTY) equivalent fatigue loads. 
+
+The surrogate can be used in a two-level propagation of uncertainty example. In the example presented in this article the year-to-year variability in the shape and scale parameters of the hub height wind speed Weibull distribution are propagated into a variation of AEP and of lifetime equivalent fatigue loads.  Coefficient of variations of 5.6\% for the scale and of 5\% for the shape parameters give a coefficient of variation of 2.4\% in AEP, of 1.8\% in lifetime $\expect(BRF)$ and of 0.5\% in lifetime $\expect(TBF)$. 
+
+% I've moved all the following paragraphs to the discussion - I think they belong there. In the conclusion, we should be more concise and concrete and outline the major findings from what we've done, not speculations on what this can be used for. So I would maybe add a few more sentences to the conclusion (e.g. the explained variance from Sobol indexes).
  
 %% (This is a repetition of the discussion above)  The present approach can also be used to improve the estimation of the annual energy production and of the lifetime equivalent fatigue load based on site specific characteristics. The combined PCE surrogates can be understood as an extension of the power curve and can be a way to communicate the aero-elastic performance of a turbine between the manufacturer and the operators without compromising intellectual property. The final surrogate is an uncertainty model that predicts the performance of the turbine as a probability distribution for a given inflow condition. This uncertainty model of turbine performance can be easily implemented in different workflows such as: (1) Uncertainty quantification of the energy production inside a wind plant. (2) Robust wind plant layout optimization problem based on AEP and EFL and their corresponding uncertainties.
 
@@ -723,18 +801,19 @@ This work was supported by the International Collaborative Energy Technology R\&
 %% else use the following coding to input the bibitems directly in the
 %% TeX file.
 
-\begin{thebibliography}{00}
+%% \begin{thebibliography}{00}
 
 %% \bibitem{label}
 %% Text of bibliographic item
 %% \bibitem{}
 
-\end{thebibliography}
+%% \end{thebibliography}
+
 %
 %\appendix
 %\section{Model selection - DTU 10 MW surrogate}
 %
-%Several number of folds are tested in the k-fold cross-validation selection of the proper level of sparsity in each of the outputs. 20-fold and 140-fold (maximum number of folds possible or leave-one-out) cross-validation results are shown in figure \ref{fig_20fold}. This figure shows the cross validation mean squared error for some of the outputs for all the possible training subsets. It can be seen that there is a large deviation in the errors when different folds are left for comparison. In particular, the extreme points in the input sample are important for the training process as they will contain the only information about the model response in regions with low probability. The error of a surrogate is larger if the training set does not include such extreme points. For the final results the 20-fold validation is selected because it gives a good balance between computational effort and accuracy in the estimation of the regularization coefficient obtained from %the leave-one-out.
+%Several number of folds are tested in the k-fold cross-validation selection of the proper level of sparsity in each of the outputs. 20-fold and 140-fold (maximum number of folds possible or leave-one-out) cross-validation results are shown in Figure \ref{fig_20fold}. This figure shows the cross validation mean squared error for some of the outputs for all the possible training subsets. It can be seen that there is a large deviation in the errors when different folds are left for comparison. In particular, the extreme points in the input sample are important for the training process as they will contain the only information about the model response in regions with low probability. The error of a surrogate is larger if the training set does not include such extreme points. For the final results the 20-fold validation is selected because it gives a good balance between computational effort and accuracy in the estimation of the regularization coefficient obtained from %the leave-one-out.
 %
 %\begin{figure}[h!]
 %\begin{centering}
