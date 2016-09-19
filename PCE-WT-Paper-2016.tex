@@ -132,7 +132,7 @@ The wind turbine design standard IEC 61400-1 \cite{international2005iec} provide
 \end{figure*}
 
 
-If a full design load case setup similar to the IEC 61400-1 design cases is used for that purpose, the problem quickly becomes time-consuming as new dynamic simulations would be required for each site. As an example, the number of simulations required to predict within $1\%$ error the lifetime equivalent fatigue loads on a floating wind turbine can reach up to $3,200,000=20^5$ using regular grid-based estimates or in the order of 50,000 using Monte-Carlo (MC) simulation \cite{graf2015high}; in this study the inflow conditions (sea/wind fields) are characterized by five stochastic variables. An approach that alleviates these issues is mapping the turbine response to different environmental inputs by means of a fast and accurate surrogate model. Several techniques can be used to predict the behavior of the turbine from a limited set of model evaluations such as: interpolation techniques, response surface techniques, polynomial chaos expansions (PCE), Gaussian process (Kriging) and machine learning techniques. 
+If a full design load case setup similar to the IEC 61400-1 design cases is used for that purpose, the problem quickly becomes time-consuming as new dynamic simulations would be required for each site. As an example, the number of simulations required to predict within $1\%$ error the lifetime equivalent fatigue loads on a floating wind turbine can reach up to $3,200,000=20^5$ using regular grid-based estimates or in the order of 50,000 using Monte-Carlo (MC) simulation \cite{graf2015high}; in this study the inflow conditions (sea/wind fields) are characterized by five stochastic variables. An approach that alleviates these issues is mapping the turbine response to different environmental inputs by means of a fast and accurate surrogate model. Several techniques can be used to predict the behavior of the turbine from a limited set of model evaluations such as: interpolation techniques, response surface techniques, polynomial chaos expansion (PCE), Gaussian process (Kriging) and machine learning techniques. 
 
 A quadratic response surface technique based on a circular central composite design has been used to represent the response of a wind turbine to five environmental input parameters \cite{toft2016assessment}. The probability density function ($\pdf$) of the fatigue load in different components of the NREL 5 MW reference turbine has been studied as function of the $\pdf$ of four inputs: mean wind speed, yaw error, wind shear exponent and wind veer parameter \cite{TallwindReport}. A Kriging surrogate has been used as a function of wind speed and turbulent standard deviation to predict the 50 year extreme loads on a 5 MW wind turbine \cite{abdallah2016influence}. Two different regression-tree wind turbine surrogates have been developed for power production \cite{clifton2013using} and for equivalent fatigue loads \cite{clifton2014effect}; these surrogates use machine learning techniques to predict the output of the turbine as a function of wind speed, turbulence intensity and shear exponent.
 
@@ -148,7 +148,26 @@ One of the main difficulties in building a surrogate of an aeroelastic wind turb
 % ------------------------------------------
 \subsection{Response to the problem}
 % ------------------------------------------
-The aim of the present study is to demonstrate a method for building a quick and accurate surrogate of a wind turbine model that predicts the turbine response as a function of multiple stochastic input variables that describe the turbulent inflow on a site ($\vx$). This article proposes the use of two different variable transformations to simplify the polynomial response surface fitting problem, see Figure \ref{fig_2_trans}. The first transformation is the Rosenblatt transformation \cite{rosenblatt1952}, which is used to de-correlate the set of $D$ input variables $\vx = (x_0, x_1, \ldots x_{D-1})$ into a set of independent uniform variables, $\vw = (w_0, w_1, \ldots w_{D-1})$. The second transformation is a logistic transformation, and it is used to enforce constraints on the polynomial surrogates \cite{simard1998transformation}. This transformation enables the use of polynomial surrogates in problems where the output has a minimum and/or maximum value. Without the logistic transformation the polynomial surrogates will present oscillations in the regions where the model has a constant output. The power production of a turbine is an example of a variable with a strict upper constraint corresponding to the rated power.
+The aim of the present study is to demonstrate a method for building a quick and accurate surrogate of a wind turbine model that predicts the turbine response as a function of multiple stochastic input variables that describe the turbulent inflow on a site ($\vx$). The surrogate for the turbine model is a set of two independent sparse polynomial response surfaces that allow to predict the variability caused by different input variable distributions and by different turbulent inflow field realizations (TIR). %%The distribution of the outputs $\pdf(\vy)$ is predicted through a MC simulation based on the distribution of the input variables $\pdf(\vx)$ using the surrogate model. Similarly, sensitivity analysis is performed using a full MC simulation, from which the input variables can be ranked by importance in explaining the variability in the outputs. 
+%%The two polynomial response surfaces that characterize the distribution of the output at a given input point ($\vx$) are the result of having multiple turbulent inflow fields that have the same statistical parameters. 
+One response surface characterizes the expected output with respect TIR: $\hat{y}_{\expect}(\vx)\approx \expect_{\text{TIR}}(y|\vx)$. The other one describes the standard deviation of the output with respect TIR: $\hat{y}_{\std}(\vx) \approx \sqrt{\variance_{\text{TIR}}(y|\vx)}$; which is a model that predicts the uncertainty in the turbine response due to different turbulent structures hitting the turbine. Finally, a sample can be obtained from the normal distribution constructed using the mean and the standard deviation surrogates in order to make a prediction of the variability in the output at a given input point:
+
+%=\std_{\text{TIR}}(y|\vx)
+
+\eq{\hat{y}(\vx) \sim \text{Normal} (\hat{y}_{\expect}(\vx),\, \hat{y}_{\std}(\vx))}{eq_output_distrib}
+
+The final surrogate $\hat{y}(\vx)$ can then be used to obtain distributions of the wind turbine power and loads in a given year whose input parameters (or wind/sea, or wind/geological) follow the distribution used to train the surrogate $\pdf(\vx)$. Since the surrogate is a response surface it can also be used to predict the distribution of the outputs when the input distributions is close but not exactly the distribution used for training the surrogate. This setup is considered a multi-leveled uncertainty propagation and it is the scenario that occurs when there is uncertainty in the parameters that characterize the WS distribution for example. This approach is necessary to estimate the uncertainty in annual energy production and lifetime averaged equivalent fatigue load.
+
+% ------------------------------------------
+\subsection{Article overview}
+% ------------------------------------------
+
+A general overview of the PCE methodology in multiple dimensions is presented in section \ref{sec_Methods}. This section describes the Rosenblatt transformation, the design of experiments used to define the training simulation points, the approach used to train sparse polynomial response surfaces and the logistic transformation used to limit the output. In section \ref{sec_Results}, the methodology is then applied to the response of the DTU 10 MW reference wind turbine HAWC2 model \cite{bak2012light} to turbulent inflow fields characterized by four input parameters. The four input parameters are the 10-min averaged hub height wind speed, the turbulent standard deviation of the instantaneous wind speed in the streamwise component, the shear exponent and the yaw misalignment angle. A study of how many independent realizations of the turbulent inflow field are required to achieve a certain error tolerance in the surrogate is presented in the section \ref{subsec_Convergence}. Finally in section \ref{subsec_Final_EX}, the surrogates are used in an example of prediction of the uncertainty in the annual energy production and the uncertainty in lifetime averaged equivalent fatigue loads.
+
+\section{Methods}
+\label{sec_Methods}
+
+This article proposes the use of two different variable transformations to simplify the polynomial response surface fitting problem, see Figure \ref{fig_2_trans}. The first transformation is the Rosenblatt transformation \cite{rosenblatt1952}, which is used to de-correlate the set of $D$ input variables $\vx = (x_0, x_1, \ldots x_{D-1})$ into a set of independent uniform variables, $\vw = (w_0, w_1, \ldots w_{D-1})$. The second transformation is a logistic transformation, and it is used to enforce constraints on the polynomial surrogates \cite{simard1998transformation}. This transformation enables the use of polynomial surrogates in problems where the output has a minimum and/or maximum value. Without the logistic transformation the polynomial surrogates will present oscillations in the regions where the model has a constant output. The power production of a turbine is an example of a variable with a strict upper constraint corresponding to the rated power.
 
 %, for which the joint probability distribution can be evaluated as $\pdf(\vw) = \prod_{i=0}^{D-1}{\pdf(w_i)}$
 
@@ -160,24 +179,6 @@ The aim of the present study is to demonstrate a method for building a quick and
 \end{centering}
 \end{figure*}
 
-The surrogate for the turbine model is a set of two independent polynomial response surfaces that allow to predict the variability caused by different input variable distributions and by different turbulent inflow field realizations (TIR). %%The distribution of the outputs $\pdf(\vy)$ is predicted through a MC simulation based on the distribution of the input variables $\pdf(\vx)$ using the surrogate model. Similarly, sensitivity analysis is performed using a full MC simulation, from which the input variables can be ranked by importance in explaining the variability in the outputs. 
-%%The two polynomial response surfaces that characterize the distribution of the output at a given input point ($\vx$) are the result of having multiple turbulent inflow fields that have the same statistical parameters. 
-One response surface characterizes the expected output with respect TIR: $\hat{y}_{\expect}(\vx)\approx \expect_{\text{TIR}}(y|\vx)$. The other one describes the standard deviation of the output with respect TIR: $\hat{y}_{\std}(\vx) \approx \sqrt{\variance_{\text{TIR}}(y|\vx)}$. This last response surface can be understood as a model that predicts the uncertainty in the turbine response due to different turbulent structures hitting the turbine. Finally, a sample can be obtained from the normal distribution constructed using the mean and the standard deviation surrogates in order to make a prediction of the variability in the output at a given input point:
-
-%=\std_{\text{TIR}}(y|\vx)
-
-\eq{\hat{y}(\vx) \sim \text{Normal} (\hat{y}_{\expect}(\vx),\, \hat{y}_{\std}(\vx))}{eq_output_distrib}
-
-The final surrogate $\hat{y}(\vx)$ can then be used to obtain distributions of the wind turbine power and loads in a given year whose input parameters (or wind/sea, or wind/geological) follow the distribution used to train the surrogate $\pdf(\vx)$. Since the surrogate is a response surface it can also be used to predict the distribution of the outputs when the input distributions are close but not exactly the distribution used for training the surrogate. This setup is considered a multi-leveled uncertainty propagation and it is the scenario that occurs when there is uncertainty in the parameters that characterize the WS distribution for example. This approach is necessary to estimate the uncertainty in annual energy production and lifetime averaged equivalent fatigue load.
-
-% ------------------------------------------
-\subsection{Article overview}
-% ------------------------------------------
-
-A general overview of the PCE methodology in multiple dimensions is presented in section \ref{sec_Methods}. This section describes the Rosenblatt transformation, the design of experiments used to define the training simulation points, the approach used to train sparse polynomial response surfaces and the logistic transformation used to limit the output. In section \ref{sec_Results}, the methodology is then applied to the response of the DTU 10 MW reference wind turbine HAWC2 model \cite{bak2012light} to turbulent inflow fields characterized by four input parameters. The four input parameters are the 10-min averaged hub height wind speed, the turbulent standard deviation of the instantaneous wind speed in the streamwise component, the shear exponent and the yaw misalignment angle. A study of how many independent realizations of the turbulent inflow field are required to achieve a certain error tolerance in the surrogate is presented in the section \ref{subsec_Convergence}. Finally in section \ref{subsec_Final_EX}, the surrogates are used in an example of prediction of the uncertainty in the annual energy production and the uncertainty in lifetime averaged equivalent fatigue loads.
-
-\section{Methods}
-\label{sec_Methods}
 
 \subsection{1D PCE theory}
 
@@ -223,7 +224,7 @@ The orthogonal polynomials are used to build a polynomial approximation of the o
 
 \eq{y(x) \approx \hat{y}(x) = \sum\limits_{l = 0}^{M} c_l \, \phi_{l} (x)}{eq_PCE}
 
-The orthogonality property makes the PCE an useful approach to propagate uncertainty over a polynomial response surface because the statistical moments of the output can be derived directly from the coefficients:
+%The orthogonality property makes the PCE an useful approach to propagate uncertainty over a polynomial response surface because the statistical moments of the output can be derived directly from the coefficients:
 
 % \eq{\expect(y) = \int y(x)\, \pdf(x)\,dx  = \langle 1, y \rangle \approx \langle 1, \sum\limits_{l = 0}^{M} c_l \, \phi_{l} \rangle = \sum\limits_{l = 0}^{M} c_l \langle 1, \phi_{l} \rangle = c_{0}}{}
 
@@ -231,7 +232,7 @@ The orthogonality property makes the PCE an useful approach to propagate uncerta
 
 % \eq{\variance(y) = \std^2(y) = \expect(y^2) - \expect(y)^2 =  \sum\limits_{l = 1}^{M} c^2_{l}}{}
 
-\eq{\expect(\hat{y}) = c_{0} \quad \quad \variance(\hat{y})=\sum\limits_{l = 1}^{M} c^2_{l}}{}
+%\eq{\expect(\hat{y}) = c_{0} \quad \quad \variance(\hat{y})=\sum\limits_{l = 1}^{M} c^2_{l}}{}
 
 There are two different approaches to determine the $c_l$ coefficients:
 
@@ -245,19 +246,19 @@ There are two different approaches to determine the $c_l$ coefficients:
 
 \subsection{Rosenblatt transformation}
 
-To build the PCE of a model with multiple correlated inputs ($\vx$), it is required to initially transform the correlated input space into an uncorrelated space ($\vw=R^{-1}(\vx)$). In this article, the Rosenblatt transformation is used because the input distribution of the turbulent inflow field parameters are usually defined in a sequence of conditional relationships. Refer to Dimitrov et al \cite{dimitrov2015model} and Graf et al \cite{graf2015high} for examples of such distributions used for offshore and floating wind turbine fatigue and extreme load analysis.
+To build the PCE of a model with multiple correlated inputs ($\vx$), it is required to initially transform the correlated input space into an uncorrelated space ($\vw=R^{-1}(\vx)$). In this article, the Rosenblatt transformation is used because the input distribution of the turbulent inflow field parameters are usually defined in a sequence of conditional relationships \cite{rosenblatt1952}. Refer to Dimitrov et al \cite{dimitrov2015model} and Graf et al \cite{graf2015high} for examples of such distributions used for offshore and floating wind turbine fatigue and extreme load analysis.
 
-The sequential dependency means that the distribution of each of the input variables is given by a parametric $\pdf_i$, whose parameters $\vp_i$ are themselves functions of the previous input variables:
+%The sequential dependency means that the distribution of each of the input variables is given by a parametric $\pdf_i$, whose parameters $\vp_i$ are themselves functions of the previous input variables:
 
-\eq{X_i \sim \pdf_{i}(x_i|\vp_i = \vp_i(x_0,x_1,\dots,x_{i-1}))}{}
+%\eq{X_i \sim \pdf_{i}(x_i|\vp_i = \vp_i(x_0,x_1,\dots,x_{i-1}))}{}
 
-The Rosenblatt transformation consists in using the conditional cumulative distribution function of each individual variable, $\cdf_i$, in sequence to transform the variable into an uncorrelated uniform variable \cite{rosenblatt1952}:
+%The Rosenblatt transformation consists in using the conditional cumulative distribution function of each individual variable, $\cdf_i$, in sequence to transform the variable into an uncorrelated uniform variable \cite{rosenblatt1952}:
 
-\eq{w_i = R^{-1}(x_i) = \cdf_{i}(x_i|\vp_i = \vp_i(x_0,x_1,\dots,x_{i-1}))}{eq_Rosen}
+%\eq{w_i = R^{-1}(x_i) = \cdf_{i}(x_i|\vp_i = \vp_i(x_0,x_1,\dots,x_{i-1}))}{eq_Rosen}
 
-\noindent or to use the inverse $\cdf^{-1}_i$ to transform the uniform variable into the corresponding input:
+%\noindent or to use the inverse $\cdf^{-1}_i$ to transform the uniform variable into the corresponding input:
 
-\eq{x_i = R(w_i) = \cdf^{-1}_{i}(w_i|\vp_i = \vp_i(x_0,x_1,\dots,x_{i-1}))}{eq_Rosen}
+%\eq{x_i = R(w_i) = \cdf^{-1}_{i}(w_i|\vp_i = \vp_i(x_0,x_1,\dots,x_{i-1}))}{eq_Rosen}
 
 Since all the variables are transformed into uncorrelated unitary uniform variables then the PCE only requires the use of the Legendre polynomials: $y(\vx) = y(R(\vw)) \approx \hat{y}(\vw)$. 
 
@@ -353,21 +354,17 @@ Cross-validation is used to select the regularization coefficient $\alpha$ that 
 
 \subsection{Logistic transformation}
 
-A logistic transformation is applied to an output of the model in order to avoid oscillations in the regions where the model is constant. In practice this transformation is used to impose strict restrictions on the polynomial surrogates. The logistic transformation uses the logit function:
+A logistic transformation is applied to an output of the model in order to avoid oscillations in the regions where the model is constant. In practice this transformation is used to impose strict restrictions on the polynomial surrogates. %The logistic transformation uses the logit function:
+%%\eq{L(p)= \ln \left( \frac{p}{1-p} \right) }{}
+%%\noindent and its inverse, the logistic function:
+%%\eq{L^{-1}(q) = \frac{1}{1+e^{-q}}}{}
+The transformation consists in applying the \emph{logit} function, $L(p)= \ln \left( \frac{p}{1-p}\right)$, to the model output at the training points $y_i=y(\vx_i)$ into the over-shooting variable space: $z_i=L(a_1\,y_i+a_0)$ \cite{simard1998transformation}. %%
+%, see equation \ref{eq_logit}. 
+%The surrogates are then fitted to the $z_i$ outputs.
+%\eq{z_i = L(a_1\,y_i+a_0)}{eq_logit}
+Finally, each time the surrogate is evaluated, the prediction of the surrogate is transformed back to the original output space $\hat{y}=(L^{-1}(\hat{z})-a_0)/a_1$. The constants of the transformation are calibrated in order to impose the constrains of the output and to avoid numerical instabilities that are inherent to the logit function.
 
-\eq{L(p)= \ln \left( \frac{p}{1-p} \right) }{}
-
-\noindent and its inverse, the logistic function:
-
-\eq{L^{-1}(q) = \frac{1}{1+e^{-q}}}{}
-
-The transformation consists in applying the logit function to the model output at the training points $y_i=y(\vx_i)$ to define the training points in the possibly over-shooting variable space $z_i$ \cite{simard1998transformation}, see equation \ref{eq_logit}. The surrogates are then fitted to the $z_i$ outputs.
-
-\eq{z_i = L(a_1\,y_i+a_0)}{eq_logit}
-
-Finally, each time the surrogate is evaluated, the prediction of the surrogate $\hat{z}$ is transformed back to the original output space $\hat{y}$, see equation \ref{eq_logistic}. The constants of the transformation ($a_0$ and $a_1$) are calibrated in order to impose the constrains of the output and to avoid numerical instabilities that are inherent to the logit function.
-
-\eq{\hat{y} = \frac{L^{-1}(\hat{z}) - a_0}{a_1} }{eq_logistic}
+%\eq{\hat{y} = \frac{L^{-1}(\hat{z}) - a_0}{a_1} }{eq_logistic}
 
 
 \subsection{Global sensitivity analysis}
@@ -641,7 +638,7 @@ TTY &  $5.3\times 10^{-1}$ & $1.9\times 10^{-3}$ & $1.9\times 10^{-3}$ &     $4.
 \subsection{Convergence}
 \label{subsec_Convergence}
 
-A leave-one-out cross-validation (LOO) is done to estimate the distribution of the prediction error of each surrogate as a function of the number of independent turbulent seeds. A LOO is equivalent to a k-fold validation in which the number of folds is the number of data points. This means that the surrogate is trained using 139 input points with a different number of turbulent inflow realizations per input point. Then, the local statistical moments of the output predicted by the surrogates at the missing point are compared against the statistics computed using the full 100 model outputs with different TIR. In this article, the prediction errors are normalized with respect to the maximum scale of the output variable, which means that the errors represent the fraction of the total scale that should be considered as an extra uncertainty due to the inadequacy of the surrogate. The prediction error for the local mean surrogate is defined as:
+A leave-one-out cross-validation (LOO) is done to estimate the distribution of the prediction error of each surrogate as a function of the number of independent turbulent seeds per input points used in the surrogate training. A LOO is a cross validation in which the surrogate is trained leaving on point out. Then, the local statistical moments of the output predicted by the surrogates at the missing point are compared against the statistics computed using the surrogate. In this article, the prediction errors are normalized with respect to the maximum scale of the output variable, which means that the errors represent the fraction of the total scale that should be considered as an extra uncertainty due to the inadequacy of the surrogate. The prediction error for the local mean surrogate is defined as:
 
 \eq{\eyE = \frac{y_{\expect}(\vx_{LO}) - \hat{y}_{\expect}(\vx_{LO})}{\max(y)}}{}
 
