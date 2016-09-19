@@ -36,7 +36,7 @@
 %% elsarticle.cls. If you prefer to use the old commands
 %% please give \usepackage{epsfig}
 
-\usepackage[margin=1.3in]{geometry}
+\usepackage[margin=1.2in]{geometry}
 \input{head.tex}
 
 %% The amssymb package provides various useful mathematical symbols
@@ -90,7 +90,7 @@
 \author[label3]{Peter Graf}
 \author[label1]{Taeseong Kim}
 
-\address[label0]{jumu@dtu.dk, Department of Wind Energy, Technical University of Denmark}
+\address[label0]{jumu@dtu.dk, Department of Wind Energy, Technical University of Denmark. \newline Ris{\o} Campus, Frederiksborgvej 399 Building 125. 4000 Roskilde. Denmark}
 \address[label1]{Department of Wind Energy, Technical University of Denmark}
 \address[label2]{Department of Civil Engineering, Aalborg University}
 \address[label3]{National Renewable Energy Laboratory, Colorado USA}
@@ -98,7 +98,7 @@
 \begin{abstract}
 %% Text of abstract
 In the present work, polynomial surrogates are used to characterize the energy production and lifetime equivalent fatigue loads for different components of the DTU 10 MW reference wind turbine under realistic atmospheric conditions. %<Comment: this sentence can go somewhere in the introduction, but it is not a good idea to put in the abstract, where we should only describe work done by the authors> polynomial chaos expansion is a method to propagate uncertainty in highly nonlinear models that requires a significantly lower number of model evaluations in comparison to MC simulations. The application of PCE to wind energy problems requires the use of iso-probability transformations to do a change of variables from the correlated joint probability distribution of the input variables into a non-correlated space. A k-fold cross validation is implemented to avoid over fitting and to achieve sparsity in the surrogates.
-One of the contributions of the present article is to model the variability caused by different turbulent structures in the inflow. This is done by creating independent surrogates for the mean and standard deviation of each output of the aeroelastic model for different realizations of the turbulent structures. A global sensitivity analysis shows that the turbulent inflow realization has a bigger impact on the total distribution of equivalent fatigue loads than the shear coefficient or yaw miss-alignment. The methodology presented extends the deterministic power and thrust coefficient curves to uncertainty models and adds new variables like damage equivalent fatigue loads in different components of a wind turbine. These uncertainty models can then be implemented inside other work-flows such as: estimation of the uncertainty in annual energy production due to inter yearly resource variability and/or robust wind power plant layout optimization. It can be concluded that it is possible to capture the global behavior of a modern wind turbine and its uncertainty under realistic inflow conditions using polynomial response surfaces. The surrogates are a way to obtain power and load estimation under site specific characteristics without sharing the proprietary aero-elastic design. % < We should add a sentence summarizing the conclusions >
+One of the contributions of the present article is to model the variability caused by different turbulent structures in the inflow. This is done by creating independent surrogates for the mean and standard deviation of each output of the aeroelastic model for different realizations of the turbulent structures. A global sensitivity analysis shows that the turbulent inflow realization has a bigger impact on the total distribution of equivalent fatigue loads than the shear coefficient or yaw miss-alignment. The methodology presented extends the deterministic power and thrust coefficient curves to uncertainty models and adds new variables like damage equivalent fatigue loads in different components of a wind turbine. These surrogate model can then be implemented inside other work-flows such as: estimation of the uncertainty in annual energy production due to wind resources variability and/or robust wind power plant layout optimization. It can be concluded that it is possible to capture the global behavior of a modern wind turbine and its uncertainty under realistic inflow conditions using polynomial response surfaces. The surrogates are a way to obtain power and load estimation under site specific characteristics without sharing the proprietary aero-elastic design. % < We should add a sentence summarizing the conclusions >
 \end{abstract}
 %
 \begin{keyword}
@@ -410,7 +410,7 @@ The model consists of the DTU 10 MW reference wind turbine HAWC2 model \cite{lar
 
 \begin{table}[!h]
 \begin{centering}
-\resizebox{5in}{!}{
+\resizebox{4.5in}{!}{
 \begin{tabular}{lcccc}
     \hline
     Input & Variable & Distribution & \multicolumn{2}{c}{Parameters} \\
@@ -468,7 +468,7 @@ Seven different model outputs are considered ($\vy$), see table \ref{tab_outs}. 
 
 \begin{table}[!h]
 \begin{centering}
-\resizebox{4in}{!}{
+\resizebox{3.5in}{!}{
 \begin{tabular}{lcc}
     \hline
     Output & $m$ & Variable \\
@@ -686,7 +686,7 @@ This section presents an example to illustrate the use of the surrogates of the 
 
 \begin{figure*}[h!]
 \begin{centering}
-\includegraphics[width=0.8\linewidth]{Figures/2level_propagation.pdf}
+\includegraphics[width=0.9\linewidth]{Figures/2level_propagation.pdf}
 \caption{2 levels of propagation of uncertainty.}
 \label{fig_2_UQ}
 \end{centering}
@@ -750,7 +750,7 @@ A 1000 MC sample of the distribution of one year $\expect_{\vx}(\vy)$ is generat
 
 \section{Discussion}
 
-The present article presents a methodology to implement sparse polynomial surrogates for aeroelastic wind turbine models. PCE are widely used in the uncertainty quantification field due to their efficiency to compute the statistical properties of the output and because the sensitivity analysis is obtained without any additional effort. The main two limitations in the use of PCE for wind energy are: (1) The input atmospheric parameters are usually jointly distributed with several layers of dependency (2) Some of the output have discontinuities and/or are restricted to certain values (e.g. only positive). The present article has shown how to solve this two problems: the implementation of an iso-probabilistic transformation to de-correlate the inputs, and  the use of a logistic transformation to implement restrictions on the outputs. The benefits of using the logistic transformation can be seen in Figure \ref{fig_y_hat_E_V}, note that the PCE do not present oscillations in the constant regions, as it can be seen for P$_{\expect}$, for P$_{\std}$ and CT$_{\std}$.
+The present article presents a methodology to implement sparse polynomial surrogates for aeroelastic wind turbine models. PCE are widely used in the uncertainty quantification field due to their efficiency to compute the statistical properties of the output and because the sensitivity analysis is obtained without any additional effort. The main two limitations in the use of PCE for wind energy are: (1) The input atmospheric parameters are usually jointly distributed with several layers of dependency (2) Some of the output have discontinuities and/or are restricted to certain values (e.g. only positive). The present article has shown how to solve these two problems: the implementation of an iso-probabilistic transformation to de-correlate the inputs, and  the use of a logistic transformation to implement restrictions on the outputs. The benefits of using the logistic transformation can be seen in Figure \ref{fig_y_hat_E_V}, note that the polynomial surrogates do not present oscillations in the constant regions.
 
 The final surrogate can be used to generate an output sample that covers the full output space, and that will predict the general details of the distributions of the outputs. One of the main limitations of the present surrogates is that the local distribution of the output is assumed to be normal, this is not the case for the operating region close to rated wind speed. Since this assumption only affects the turbulent inflow realization, it is considered to be an acceptable approximation. The local distributions of most outputs are not normal in reality, because the wind turbine controller has different strategies in each operating region, which creates skewness in the local distributions.
 
